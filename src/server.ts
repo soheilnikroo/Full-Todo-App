@@ -10,5 +10,11 @@ const hostName = process.env.SERVER_HOST || '127.0.0.1';
 server.use(express.json());
 server.use(express.urlencoded({extended: true}));
 
+//importing section
+import userRouters from './routes/user';
+
+//midlewares
+server.use(userRouters);
+
 //server listener
 server.listen(port, hostName, () => console.log(`server is up on http://${hostName}:${port}`));
