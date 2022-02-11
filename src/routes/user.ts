@@ -9,9 +9,15 @@ const router = Router();
 import userControllers from '../controllers/user';
 
 //routing section
+
+//create new user
 router.post('/api/users', userControllers.postUser);
 
+//get user base on id search
 router.get('/api/users/:userId', userControllers.getUser);
+
+//edit user properties
+router.patch('/api/users/:userId', userControllers.patchUser);
 
 
 

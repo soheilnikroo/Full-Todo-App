@@ -50,7 +50,7 @@ const postUser: RequestHandler = async (req, res, next) => {
     await fs.readFile(dataBasePath, 'utf8', (error, stringifiedData) => {
         if(error){
             console.log(error);
-            res.status(404).send({error: 'database not found'});
+            res.status(404).send({error: error});
         }else{
             const dataBaseInstance: UserType[] = JSON.parse(stringifiedData);
             const newUser = new User(req.body.userName, req.body.email, req.body.password);
@@ -69,7 +69,7 @@ const getUser: RequestHandler = async (req, res, next) => {
     await fs.readFile(dataBasePath, 'utf8', (error, stringifiedData) => {
         if(error){
             console.log(error);
-            res.status(404).send({error: 'database not found'});
+            res.status(404).send({error: error});
         }else{
             const dataBaseInstance: UserType[] = JSON.parse(stringifiedData);
             const target = dataBaseInstance.find((user: UserType) => user.id === req.params.userId);
@@ -82,7 +82,35 @@ const getUser: RequestHandler = async (req, res, next) => {
     });
 };
 
+const patchUser: RequestHandler = async (req, res, next) => {
+    await fs.readFile(dataBasePath, 'utf8', (error, stringifiedData) => {
+        if(error){
+            console.log(error);
+            res.status(404).send({error: error});
+        }else{
+            const dataBaseInstance: UserType[] = JSON.parse(stringifiedData);
+            const target = dataBaseInstance.find((user: UserType) => user.id === req.params.userId);
+            if(target){
+                dataBaseInstance.splice(dataBaseInstance.indexOf(target), 1);
+                const {userName, email, password} = req.body;
+                if(password) target.password = password;
+                if(userName) target.userName = userName;
+                if(email) target.email = email;
+                const noDuplicate = duplicationPreventor(dataBaseInstance, target);
+                if(noDuplicate){
+                    dataBaseInstance.push(target);
+                    overWriteDataBase(dataBaseInstance);
+                    res.status(200).send({success: 'changes has been implemented successfully'});
+                }else{
+                    res.status(400).send({error: `this username is already taken`});
+                };
+             }else{
+                res.status(404).send({error: `user with id: ${req.params.userId} not found`});
+            };
+        };
+    });
+};
 
 
 //exporting section
-export default {postUser, getUser}
+export default {postUser, getUser, patchUser}
