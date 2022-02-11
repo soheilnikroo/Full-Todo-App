@@ -8,7 +8,7 @@ import {RequestHandler} from 'express';
 //types
 type TaskType = {
     title: string;
-    isDone: string;
+    isDone: boolean;
 };
 
 type UserType = {
@@ -29,7 +29,7 @@ import User from '../models/user';
 
 //helper functions
 const duplicationPreventor = (users: UserType[], user: UserType) => {
-    const condition = users.find((u: UserType) => (u.userName === user.userName && u.email === user.email));
+    const condition = users.find((u: UserType) => ((u.userName === user.userName) || (u.email === user.email)));
     if(condition){
         return false;
     }else{
@@ -45,10 +45,11 @@ const overWriteDataBase = async (updatedDataBase: UserType[]) => {
     });
 }
 
-//controllers logic
+// controllers logic
 const postUser: RequestHandler = async (req, res, next) => {
     await fs.readFile(dataBasePath, 'utf8', (error, stringifiedData) => {
         if(error){
+            console.log(error);
             res.status(404).send({error: 'database not found'});
         }else{
             const dataBaseInstance: UserType[] = JSON.parse(stringifiedData);
@@ -64,6 +65,24 @@ const postUser: RequestHandler = async (req, res, next) => {
     });
 };
 
+const getUser: RequestHandler = async (req, res, next) => {
+    await fs.readFile(dataBasePath, 'utf8', (error, stringifiedData) => {
+        if(error){
+            console.log(error);
+            res.status(404).send({error: 'database not found'});
+        }else{
+            const dataBaseInstance: UserType[] = JSON.parse(stringifiedData);
+            const target = dataBaseInstance.find((user: UserType) => user.id === req.params.userId);
+            if(target){
+                res.status(200).send(target);
+            }else{
+                res.status(404).send({error: `user with id ${req.params.userId} not found`});
+            };
+        };
+    });
+};
+
+
 
 //exporting section
-export default {postUser}
+export default {postUser, getUser}

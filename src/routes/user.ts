@@ -9,7 +9,9 @@ const router = Router();
 import userControllers from '../controllers/user';
 
 //routing section
-router.post('/api/users',userControllers.postUser);
+router.post('/api/users', userControllers.postUser);
+
+router.get('/api/users/:userId', userControllers.getUser);
 
 
 

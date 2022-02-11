@@ -1,14 +1,10 @@
-//core Modules
-import path from 'path';
-import fs from 'fs';
-
 //third party packages and libraries
 import { v4 as uuidv4 } from 'uuid';
 
 //types
 type TaskType = {
     title: string;
-    isDone: string;
+    isDone: boolean;
 };
 
 //user class
