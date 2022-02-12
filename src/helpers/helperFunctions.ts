@@ -21,8 +21,17 @@ const dataBasePath = path.join(__dirname, '..', 'DB', 'DB.json');
 
 
 //helper functions
-const duplicationPreventor = (users: UserType[], user: UserType) => {
+const userDuplicationPreventor = (users: UserType[], user: UserType) => {
     const condition = users.find((u: UserType) => ((u.userName === user.userName) || (u.email === user.email)));
+    if(condition){
+        return false;
+    }else{
+        return true;
+    };
+};
+
+const taskDuplicationPreventor = (tasks: TaskType[], task: TaskType) => {
+    const condition = tasks.find((t: TaskType) => t.title === task.title);
     if(condition){
         return false;
     }else{
@@ -39,4 +48,4 @@ const overWriteDataBase = async (updatedDataBase: UserType[]) => {
 };
 
 //exporting section
-export default {duplicationPreventor, overWriteDataBase}
+export default {userDuplicationPreventor, overWriteDataBase, taskDuplicationPreventor ,dataBasePath}

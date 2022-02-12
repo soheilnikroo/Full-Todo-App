@@ -19,11 +19,6 @@ type UserType = {
     toDos: TaskType[]
 };
 
-
-//paths
-const dataBasePath = path.join(__dirname, '..', 'DB', 'DB.json');
-
-
 //importing section
 import User from '../models/user';
 import helperFunctions from '../helpers/helperFunctions';
@@ -31,14 +26,14 @@ import helperFunctions from '../helpers/helperFunctions';
 
 // controllers logic
 const postUser: RequestHandler = async (req, res, next) => {
-    await fs.readFile(dataBasePath, 'utf8', (error, stringifiedData) => {
+    await fs.readFile(helperFunctions.dataBasePath, 'utf8', (error, stringifiedData) => {
         if(error){
             console.log(error);
             res.status(404).send({error: error});
         }else{
             const dataBaseInstance: UserType[] = JSON.parse(stringifiedData);
             const newUser = new User(req.body.userName, req.body.email, req.body.password);
-            const duplicationCheck = helperFunctions.duplicationPreventor(dataBaseInstance, newUser);
+            const duplicationCheck = helperFunctions.userDuplicationPreventor(dataBaseInstance, newUser);
             if(duplicationCheck){
                 dataBaseInstance.push(newUser);
                 helperFunctions.overWriteDataBase(dataBaseInstance)
@@ -51,7 +46,7 @@ const postUser: RequestHandler = async (req, res, next) => {
 };
 
 const getUser: RequestHandler = async (req, res, next) => {
-    await fs.readFile(dataBasePath, 'utf8', (error, stringifiedData) => {
+    await fs.readFile(helperFunctions.dataBasePath, 'utf8', (error, stringifiedData) => {
         if(error){
             console.log(error);
             res.status(404).send({error: error});
@@ -68,7 +63,7 @@ const getUser: RequestHandler = async (req, res, next) => {
 };
 
 const patchUser: RequestHandler = async (req, res, next) => {
-    await fs.readFile(dataBasePath, 'utf8', (error, stringifiedData) => {
+    await fs.readFile(helperFunctions.dataBasePath, 'utf8', (error, stringifiedData) => {
         if(error){
             console.log(error);
             res.status(404).send({error: error});
@@ -81,7 +76,7 @@ const patchUser: RequestHandler = async (req, res, next) => {
                 if(password) target.password = password;
                 if(userName) target.userName = userName;
                 if(email) target.email = email;
-                const noDuplicate = helperFunctions.duplicationPreventor(dataBaseInstance, target);
+                const noDuplicate = helperFunctions.userDuplicationPreventor(dataBaseInstance, target);
                 if(noDuplicate){
                     dataBaseInstance.push(target);
                     helperFunctions.overWriteDataBase(dataBaseInstance);
@@ -97,7 +92,7 @@ const patchUser: RequestHandler = async (req, res, next) => {
 };
 
 const deleteUser: RequestHandler = async (req, res, next) => {
-    await fs.readFile(dataBasePath, 'utf8', (error, stringifiedData) => {
+    await fs.readFile(helperFunctions.dataBasePath, 'utf8', (error, stringifiedData) => {
         if(error){
             res.status(404).send({error: error});
         }else{

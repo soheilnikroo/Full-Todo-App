@@ -12,9 +12,11 @@ server.use(express.urlencoded({extended: true}));
 
 //importing section
 import userRouters from './routes/user';
+import taskRouters from './routes/task';
 
 //midlewares
 server.use(userRouters);
+server.use(taskRouters);
 
 //server listener
 server.listen(port, hostName, () => console.log(`server is up on http://${hostName}:${port}`));
