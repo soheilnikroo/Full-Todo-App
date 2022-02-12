@@ -26,24 +26,8 @@ const dataBasePath = path.join(__dirname, '..', 'DB', 'DB.json');
 
 //importing section
 import User from '../models/user';
+import helperFunctions from '../helpers/helperFunctions';
 
-//helper functions
-const duplicationPreventor = (users: UserType[], user: UserType) => {
-    const condition = users.find((u: UserType) => ((u.userName === user.userName) || (u.email === user.email)));
-    if(condition){
-        return false;
-    }else{
-        return true;
-    };
-};
-
-const overWriteDataBase = async (updatedDataBase: UserType[]) => {
-    await fs.writeFile(dataBasePath, JSON.stringify(updatedDataBase), (error) => {
-        if(error){
-            console.log(error);
-        }
-    });
-}
 
 // controllers logic
 const postUser: RequestHandler = async (req, res, next) => {
@@ -54,9 +38,10 @@ const postUser: RequestHandler = async (req, res, next) => {
         }else{
             const dataBaseInstance: UserType[] = JSON.parse(stringifiedData);
             const newUser = new User(req.body.userName, req.body.email, req.body.password);
-            if(duplicationPreventor(dataBaseInstance, newUser)){
+            const duplicationCheck = helperFunctions.duplicationPreventor(dataBaseInstance, newUser);
+            if(duplicationCheck){
                 dataBaseInstance.push(newUser);
-                overWriteDataBase(dataBaseInstance);
+                helperFunctions.overWriteDataBase(dataBaseInstance)
                 res.status(200).send({success:`${newUser.userName} has been added to database successfully`});
             }else{
                 res.status(400).send({error: 'this user is already in the database'});
@@ -96,10 +81,10 @@ const patchUser: RequestHandler = async (req, res, next) => {
                 if(password) target.password = password;
                 if(userName) target.userName = userName;
                 if(email) target.email = email;
-                const noDuplicate = duplicationPreventor(dataBaseInstance, target);
+                const noDuplicate = helperFunctions.duplicationPreventor(dataBaseInstance, target);
                 if(noDuplicate){
                     dataBaseInstance.push(target);
-                    overWriteDataBase(dataBaseInstance);
+                    helperFunctions.overWriteDataBase(dataBaseInstance);
                     res.status(200).send({success: 'changes has been implemented successfully'});
                 }else{
                     res.status(400).send({error: `this username is already taken`});
@@ -120,7 +105,7 @@ const deleteUser: RequestHandler = async (req, res, next) => {
             const target = dataBaseInstance.find((user: UserType) => user.id === req.params.userId);
             if(target){
                 dataBaseInstance.splice(dataBaseInstance.indexOf(target), 1);
-                overWriteDataBase(dataBaseInstance);
+                helperFunctions.overWriteDataBase(dataBaseInstance);
                 res.status(200).send({success: `${target.userName} has been removed from database successfully`});
             }else{
                 res.status(404).send({error: 'user not found'});
