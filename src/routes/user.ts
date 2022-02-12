@@ -19,6 +19,9 @@ router.get('/api/users/:userId', userControllers.getUser);
 //edit user properties
 router.patch('/api/users/:userId', userControllers.patchUser);
 
+//delete user account
+router.delete('/api/users/:userId', userControllers.deleteUser);
+
 
 
 //exporting section

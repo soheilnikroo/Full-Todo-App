@@ -57,7 +57,7 @@ const postUser: RequestHandler = async (req, res, next) => {
             if(duplicationPreventor(dataBaseInstance, newUser)){
                 dataBaseInstance.push(newUser);
                 overWriteDataBase(dataBaseInstance);
-                res.status(200).send(`${newUser.userName} has been added to database successfully`);
+                res.status(200).send({success:`${newUser.userName} has been added to database successfully`});
             }else{
                 res.status(400).send({error: 'this user is already in the database'});
             };
@@ -111,6 +111,23 @@ const patchUser: RequestHandler = async (req, res, next) => {
     });
 };
 
+const deleteUser: RequestHandler = async (req, res, next) => {
+    await fs.readFile(dataBasePath, 'utf8', (error, stringifiedData) => {
+        if(error){
+            res.status(404).send({error: error});
+        }else{
+            const dataBaseInstance = JSON.parse(stringifiedData);
+            const target = dataBaseInstance.find((user: UserType) => user.id === req.params.userId);
+            if(target){
+                dataBaseInstance.splice(dataBaseInstance.indexOf(target), 1);
+                overWriteDataBase(dataBaseInstance);
+                res.status(200).send({success: `${target.userName} has been removed from database successfully`});
+            }else{
+                res.status(404).send({error: 'user not found'});
+            };
+        };
+    });
+};
 
 //exporting section
-export default {postUser, getUser, patchUser}
+export default {postUser, getUser, patchUser, deleteUser};
