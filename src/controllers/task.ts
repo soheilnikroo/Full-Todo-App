@@ -25,7 +25,7 @@ type UserType = {
 //controllers section
 
 //create new task for specific user
-const postTask: RequestHandler = async (req, res, next) => {
+const postTask: RequestHandler = async (req, res) => {
     await fs.readFile(helperFunctions.dataBasePath, 'utf8', (error, stringifiedData) => {
         if(error){
             res.status(404).send({error: error});
@@ -50,5 +50,22 @@ const postTask: RequestHandler = async (req, res, next) => {
     });
 };
 
+//get users task based on id
+const getTasks: RequestHandler = async (req, res) => {
+    await fs.readFile(helperFunctions.dataBasePath, 'utf8', (error, stringifiedData) => {
+        if(error){
+            res.status(404).send({error: error});
+        }else{
+            const dataBaseInstance = JSON.parse(stringifiedData);
+            const user = dataBaseInstance.find((user: UserType) => user.id === req.params.userId);
+            if(user){
+                res.status(200).send(user.toDos);
+            }else{
+                res.status(404).send({error: 'user not found'})
+            };
+        };
+    });
+};
+
 //exporting section
-export default {postTask};
+export default {postTask, getTasks};

@@ -8,7 +8,12 @@ const router = Router();
 import taskControllers from '../controllers/task';
 
 //routing section
+
+//post task
 router.post('/api/users/:userId/tasks', taskControllers.postTask);
+
+//get tasks
+router.get('/api/users/:userId/tasks', taskControllers.getTasks);
 
 //exporting section
 export default router;
