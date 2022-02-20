@@ -43,7 +43,7 @@ const postTask: RequestHandler = async (req, res) => {
                 };
 
             }else{
-                res.status(404).send({error: `user with id ${req.params.userId} not found`});
+                res.status(404).send({error: 'user not found'});
             };
         };
     });

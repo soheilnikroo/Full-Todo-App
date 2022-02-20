@@ -54,7 +54,7 @@ const getUser: RequestHandler = async (req, res, next) => {
             if(target){
                 res.status(200).send(target);
             }else{
-                res.status(404).send({error: `user with id ${req.params.userId} not found`});
+                res.status(404).send({error: 'user not found'});
             };
         };
     });
@@ -80,10 +80,10 @@ const patchUser: RequestHandler = async (req, res, next) => {
                     helperFunctions.overWriteDataBase(dataBaseInstance);
                     res.status(200).send({success: 'changes has been implemented successfully'});
                 }else{
-                    res.status(400).send({error: `this username is already taken`});
+                    res.status(400).send({error: 'this email is already exists'});
                 };
              }else{
-                res.status(404).send({error: `user with id: ${req.params.userId} not found`});
+                res.status(404).send({error: `user not found`});
             };
         };
     });
