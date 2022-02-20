@@ -18,7 +18,6 @@ type UserType = {
     userName: string;
     email: string;
     password: string;
-    id: string;
     toDos: TaskType[]
 };
 
@@ -31,7 +30,7 @@ const postTask: RequestHandler = async (req, res) => {
             res.status(404).send({error: error});
         }else{
             const dataBaseInstance = JSON.parse(stringifiedData);
-            const userTarget: UserType = dataBaseInstance.find((user: UserType) => user.id === req.params.userId);
+            const userTarget: UserType = dataBaseInstance.find((user: UserType) => user.email === req.params.userEmail);
             if(userTarget){
                 const newTask = new Task(req.body.title, false);
                 const duplicationCheck = helperFunctions.taskDuplicationPreventor(userTarget.toDos, newTask);
@@ -57,7 +56,7 @@ const getTasks: RequestHandler = async (req, res) => {
             res.status(404).send({error: error});
         }else{
             const dataBaseInstance = JSON.parse(stringifiedData);
-            const user = dataBaseInstance.find((user: UserType) => user.id === req.params.userId);
+            const user = dataBaseInstance.find((user: UserType) => user.email === req.params.userEmail);
             if(user){
                 res.status(200).send(user.toDos);
             }else{

@@ -10,10 +10,10 @@ import taskControllers from '../controllers/task';
 //routing section
 
 //post task
-router.post('/api/users/:userId/tasks', taskControllers.postTask);
+router.post('/api/users/:userEmail/tasks', taskControllers.postTask);
 
 //get tasks
-router.get('/api/users/:userId/tasks', taskControllers.getTasks);
+router.get('/api/users/:userEmail/tasks', taskControllers.getTasks);
 
 //exporting section
 export default router;
