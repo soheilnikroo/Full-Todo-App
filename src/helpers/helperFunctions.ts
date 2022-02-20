@@ -12,7 +12,6 @@ type UserType = {
     userName: string;
     email: string;
     password: string;
-    id: string;
     toDos: TaskType[]
 };
 
@@ -22,7 +21,7 @@ const dataBasePath = path.join(__dirname, '..', 'DB', 'DB.json');
 
 //helper functions
 const userDuplicationPreventor = (users: UserType[], user: UserType) => {
-    const condition = users.find((u: UserType) => ((u.userName === user.userName) || (u.email === user.email)));
+    const condition = users.find((u: UserType) => ((u.email === user.email)));
     if(condition){
         return false;
     }else{

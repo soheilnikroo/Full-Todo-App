@@ -1,6 +1,5 @@
 //core Modules
 import fs from 'fs';
-import path from 'path';
 
 //third party packages and libraries
 import {RequestHandler} from 'express';
@@ -15,7 +14,6 @@ type UserType = {
     userName: string;
     email: string;
     password: string;
-    id: string;
     toDos: TaskType[]
 };
 
@@ -32,7 +30,7 @@ const postUser: RequestHandler = async (req, res, next) => {
             res.status(404).send({error: error});
         }else{
             const dataBaseInstance: UserType[] = JSON.parse(stringifiedData);
-            const newUser = new User(req.body.userName, req.body.email, req.body.password);
+            const newUser = new User(req.body.email, req.body.password);
             const duplicationCheck = helperFunctions.userDuplicationPreventor(dataBaseInstance, newUser);
             if(duplicationCheck){
                 dataBaseInstance.push(newUser);
@@ -52,7 +50,7 @@ const getUser: RequestHandler = async (req, res, next) => {
             res.status(404).send({error: error});
         }else{
             const dataBaseInstance: UserType[] = JSON.parse(stringifiedData);
-            const target = dataBaseInstance.find((user: UserType) => user.id === req.params.userId);
+            const target = dataBaseInstance.find((user: UserType) => user.email === req.params.userEmail);
             if(target){
                 res.status(200).send(target);
             }else{
@@ -69,7 +67,7 @@ const patchUser: RequestHandler = async (req, res, next) => {
             res.status(404).send({error: error});
         }else{
             const dataBaseInstance: UserType[] = JSON.parse(stringifiedData);
-            const target = dataBaseInstance.find((user: UserType) => user.id === req.params.userId);
+            const target = dataBaseInstance.find((user: UserType) => user.email === req.params.userEmail);
             if(target){
                 dataBaseInstance.splice(dataBaseInstance.indexOf(target), 1);
                 const {userName, email, password} = req.body;
@@ -97,7 +95,7 @@ const deleteUser: RequestHandler = async (req, res, next) => {
             res.status(404).send({error: error});
         }else{
             const dataBaseInstance = JSON.parse(stringifiedData);
-            const target = dataBaseInstance.find((user: UserType) => user.id === req.params.userId);
+            const target = dataBaseInstance.find((user: UserType) => user.email === req.params.userEmail);
             if(target){
                 dataBaseInstance.splice(dataBaseInstance.indexOf(target), 1);
                 helperFunctions.overWriteDataBase(dataBaseInstance);

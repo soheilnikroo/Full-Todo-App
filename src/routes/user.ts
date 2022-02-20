@@ -14,13 +14,13 @@ import userControllers from '../controllers/user';
 router.post('/api/users', userControllers.postUser);
 
 //get user base on id search
-router.get('/api/users/:userId', userControllers.getUser);
+router.get('/api/users/:userEmail', userControllers.getUser);
 
 //edit user properties
-router.patch('/api/users/:userId', userControllers.patchUser);
+router.patch('/api/users/:userEmail', userControllers.patchUser);
 
 //delete user account
-router.delete('/api/users/:userId', userControllers.deleteUser);
+router.delete('/api/users/:userEmail', userControllers.deleteUser);
 
 
 

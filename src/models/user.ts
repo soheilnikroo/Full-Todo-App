@@ -1,6 +1,3 @@
-//third party packages and libraries
-import { v4 as uuidv4 } from 'uuid';
-
 //types
 type TaskType = {
     title: string;
@@ -12,13 +9,11 @@ class User {
     userName: string;
     email: string;
     password: string;
-    id: string;
     toDos: TaskType[]
-    constructor(userName: string, email: string, password: string){
-        this.userName = userName,
+    constructor(email: string, password: string){
         this.email = email,
         this.password = password,
-        this.id = uuidv4(),
+        this.userName = (this.email).split('@')[0];
         this.toDos = []
     };
 };
