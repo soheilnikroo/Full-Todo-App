@@ -15,5 +15,8 @@ router.post('/api/users/:userEmail/tasks', taskControllers.postTask);
 //get tasks
 router.get('/api/users/:userEmail/tasks', taskControllers.getTasks);
 
+//delete task
+router.delete('/api/users/:userEmail/tasks/:taskTitle', taskControllers.deleteTask);
+
 //exporting section
 export default router;

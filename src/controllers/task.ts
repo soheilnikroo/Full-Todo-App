@@ -49,7 +49,7 @@ const postTask: RequestHandler = async (req, res) => {
     });
 };
 
-//get users task based on id
+//get users task based on email
 const getTasks: RequestHandler = async (req, res) => {
     await fs.readFile(helperFunctions.dataBasePath, 'utf8', (error, stringifiedData) => {
         if(error){
@@ -66,5 +66,30 @@ const getTasks: RequestHandler = async (req, res) => {
     });
 };
 
+//delete task based on title search
+const deleteTask: RequestHandler = async (req, res) => {
+    await fs.readFile(helperFunctions.dataBasePath, 'utf8', (error, stringifiedData) => {
+        if(error){
+            res.status(500).send({error: 'ERROR: unable to find database'});
+        }else{
+            const dataBaseInstance = JSON.parse(stringifiedData);
+            const target = dataBaseInstance.find((user: UserType) => user.email === req.params.userEmail);
+            if(target){
+                const userToDos = target.toDos
+                const desiredTask = userToDos.find((task: TaskType) => task.title === req.params.taskTitle);
+                if(desiredTask){
+                    userToDos.splice(userToDos.indexOf(desiredTask), 1);
+                    helperFunctions.overWriteDataBase(dataBaseInstance);
+                    res.status(200).send({success: 'SUCCESS: task has been removed successfully'});
+                }else{
+                    res.status(404).send({error: 'ERROR: unable to find task'});
+                };
+            }else{
+                res.status(404).send({error: 'ERROR: user not found'});
+            };
+        };
+    });
+};
+
 //exporting section
-export default {postTask, getTasks};
+export default {postTask, getTasks, deleteTask};
