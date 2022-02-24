@@ -15,6 +15,9 @@ router.post('/api/users/:userEmail/tasks', taskControllers.postTask);
 //get tasks
 router.get('/api/users/:userEmail/tasks', taskControllers.getTasks);
 
+//UPDATE
+router.patch('/api/users/:userEmail/:taskTitle', taskControllers.patchTask );
+
 //delete task
 router.delete('/api/users/:userEmail/tasks/:taskTitle', taskControllers.deleteTask);
 

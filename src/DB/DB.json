@@ -1,6 +1,17 @@
 [
-    {"userName":"danial","email":"dpezeshpoor@yahoo.com","password":"88952754","toDos":[{"title": "figma", "isDone": false},  {"title": "learn react", "isDone": false}, {"title": "learn Ionic", "isDone": true}]},
-    {"userName":"mamad","email":"mamad@test.com","password":"13454779d","toDos":[{"title": "figma", "isDone": false}, {"title": "marketing", "isDone": false}]},
-    {"userName":"soheil","email":"soheilnikroo@yahoo.com","password":"123456789","toDos":[{"title": "web component", "isDone": false}]},
-    {"userName":"shamim","email":"shmim_rz@yahoo.com","password":"123456789","toDos":[{"title": "Vue.js", "isDone": false}]}
-]  
+    {"userName":"danial","email":"dpezeshpoor@yahoo.com","password":"88952754","toDos":[
+        {"title": "figma", "isDone": false},
+        {"title": "learn react", "isDone": false}, 
+        {"title": "learn Ionic", "isDone": true}]
+    },
+    {"userName":"mamad","email":"mamad@test.com","password":"13454779d","toDos":[
+        {"title": "figma", "isDone": false}, 
+        {"title": "marketing", "isDone": false}]
+    },
+    {"userName":"soheil","email":"soheilnikroo@yahoo.com","password":"123456789","toDos":[
+        {"title": "web component", "isDone": false}]
+    },
+    {"userName":"shamim","email":"shmim_rz@yahoo.com","password":"123456789","toDos":[
+        {"title": "Vue.js", "isDone": false}]
+    }
+]

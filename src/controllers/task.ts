@@ -66,6 +66,37 @@ const getTasks: RequestHandler = async (req, res) => {
     });
 };
 
+//update task title and isDone state
+const patchTask:RequestHandler = async (req, res) => {
+    await fs.readFile(helperFunctions.dataBasePath, 'utf8', (error, stringifiedData) => {
+        if(error){
+            res.status(500).send({error: 'ERROR: unable to find database'});
+        }else{
+            const dataBaseInstance = JSON.parse(stringifiedData);
+            const targetUser = dataBaseInstance.find((user: UserType) => user.email === req.params.userEmail);
+            if(targetUser){
+                const targetUserToDos = targetUser.toDos;
+                // console.log(targetUserToDos);
+                const targetTask = targetUserToDos.find((task: TaskType) => task.title === req.params.taskTitle);
+                if(targetTask){
+                    const newTitle = req.body.title, newIsDone = req.body.isDone;
+                    if(newTitle) targetTask.title = newTitle;
+                    if(newIsDone) targetTask.isDone = newIsDone;
+                    // console.log(targetTask);
+                    // console.log(targetUser);
+                    // console.log(dataBaseInstance);
+                    helperFunctions.overWriteDataBase(dataBaseInstance);
+                    res.status(200).send({success: 'SUCCESS: changes has been implemented'});
+                }else{
+                    res.status(404).send({error: 'ERROR: task not found'});
+                };
+            }else{
+                res.status(404).send({error: 'ERROR: user not found'});
+            };
+        };
+    });
+};
+
 //delete task based on title search
 const deleteTask: RequestHandler = async (req, res) => {
     await fs.readFile(helperFunctions.dataBasePath, 'utf8', (error, stringifiedData) => {
@@ -92,4 +123,4 @@ const deleteTask: RequestHandler = async (req, res) => {
 };
 
 //exporting section
-export default {postTask, getTasks, deleteTask};
+export default {postTask, getTasks, patchTask, deleteTask};
