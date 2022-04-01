@@ -1,9 +1,9 @@
 ![Todo App Design Shot](https://github.com/soheilnikroo/Full-Todo-App/blob/master/TodoApp-Preview.png)
 
 # Full-Todo-App
-This is Phone book collaborate with Danial Pezeshpoor. Front-End develop by `react` library an with `Ionic`, `Capacitor`. Back-End develop by node js, express. Database is with `json`.
+This is Todo App collaborate with Danial Pezeshpoor. Front-End develop by `react` library an with `Ionic`, `Capacitor`. Back-End develop by node js, express. Database is with `json`.
 
-- Link: comming soon...
+- Link: https://full-todo-app.netlify.app/welcome
 - Figam Design Link: https://www.figma.com/file/xlx6cKzN01nzS1dW1QDIBh/Todo-App?node-id=0%3A1
 
 # TodoApp Structure
