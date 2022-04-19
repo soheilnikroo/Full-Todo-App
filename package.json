@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/soheilnikroo/Full-Todo-App#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.3",
     "mongoose": "^6.3.0",
     "validator": "^13.7.0"
