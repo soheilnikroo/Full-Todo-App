@@ -1,0 +1,28 @@
+{
+  "name": "full-todo-app-api",
+  "version": "1.0.0",
+  "description": "![Todo App Design Shot](https://github.com/soheilnikroo/Full-Todo-App/blob/master/TodoApp-Preview.png)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "dev": "env-cmd -f ./src/config/dev.env nodemon ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soheilnikroo/Full-Todo-App.git"
+  },
+  "author": "danial pezeshpoor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/soheilnikroo/Full-Todo-App/issues"
+  },
+  "homepage": "https://github.com/soheilnikroo/Full-Todo-App#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.3.0"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "nodemon": "^2.0.15"
+  }
+}
