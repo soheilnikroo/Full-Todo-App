@@ -23,4 +23,3 @@ mongoose.connect(DBUri, {
 })
     .then(() => {server.listen(port, hostName, () => console.log(`server is alive at $http://${hostName}:${port}`))})
     .catch(error => {console.log(error)});
-
