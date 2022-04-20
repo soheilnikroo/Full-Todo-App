@@ -2,12 +2,14 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
 
 //user Schema 
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
+        unique: true,
         trim: true,
         validate(value){
             if(!validator.isEmail(value)){
@@ -26,26 +28,69 @@ const userSchema = new mongoose.Schema({
                 throw new Error('password cannot contain "password"');
             }
         }
-    }
+    },
+
+    tokens: [{
+        token:{
+            type: String,
+            required: true,
+        }
+    }]
 },{
     timestamps: true
 })
 
-//mongoose hooks
+//custom methods on User model
 
-//hashing password before saving it to database
-userSchema.pre('save', async function(next){
+//finding user by credentials
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email });
+
+    if(!user){
+        throw new Error('unable to login');
+    };
+
+    const passwordIsMatch = await bcrypt.compare(password, user.password);
+
+    if(!passwordIsMatch){
+        throw new Error('unable to login');
+    };
+
+    return user;
+}
+
+
+
+
+//custom methods on User instance
+
+//generating authentication token for user
+userSchema.methods.generateAuthToken = async function(){
     const user = this;
     try{
-        const salts = await bcrypt.genSalt(8);
-        user.password = await bcrypt.hash(user.password, salts);
-        next(); 
+        const token = await jwt.sign({_id: user._id}, process.env.JWT_SECRET);
+        user.tokens = user.tokens.concat({token});
+        await user.save();
+        return token
     }catch(error){
         console.log(error);
     }
+}
+
+//mongoose hooks
+
+//hashing password before saving it to database
+userSchema.pre('save', async function(next) {
+    const user = this; 
+    if(user.isModified('password')){
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt) ;
+    }
+    next();
 })
 
 //modelizing user Schema
 const User = mongoose.model('User', userSchema);
 
+//exporting section
 module.exports = User;
