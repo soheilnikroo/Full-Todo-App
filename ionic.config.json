@@ -1,0 +1,7 @@
+{
+  "name": "full-todo-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
