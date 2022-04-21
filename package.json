@@ -2,7 +2,20 @@
   "name": "full-todo-app",
   "version": "0.0.1",
   "private": true,
+  "author": "Soheil Nikroo <soheiln1234@gamil.com>",
+  "repository": "https://github.com/soheilnikroo/Full-Todo-App",
+  "contributors": [
+    {
+      "name": "Soheil Nikroo",
+      "email": "soheiln1234@gmail.com"
+    },
+    {
+      "name": "Danial Pezeshpoor",
+      "email": "dpezeshpoor@yahoo.com"
+    }
+  ],
   "dependencies": {
+    "@capacitor/android": "3.4.3",
     "@capacitor/app": "1.1.1",
     "@capacitor/core": "3.4.3",
     "@capacitor/haptics": "1.1.4",
@@ -10,15 +23,6 @@
     "@capacitor/status-bar": "1.0.8",
     "@ionic/react": "^6.0.0",
     "@ionic/react-router": "^6.0.0",
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.6.3",
-    "@types/jest": "^26.0.20",
-    "@types/node": "^12.19.15",
-    "@types/react": "^16.14.3",
-    "@types/react-dom": "^16.9.10",
-    "@types/react-router": "^5.1.11",
-    "@types/react-router-dom": "^5.1.7",
     "ionicons": "^5.4.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -65,7 +69,16 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "3.4.3"
+    "@capacitor/cli": "3.4.3",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.6.3",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^12.19.15",
+    "@types/react": "^16.14.3",
+    "@types/react-dom": "^16.9.10",
+    "@types/react-router": "^5.1.11",
+    "@types/react-router-dom": "^5.1.7"
   },
-  "description": "An Ionic project"
+  "description": "Managment app, for the who want to have managed life."
 }
