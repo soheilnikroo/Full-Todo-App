@@ -1,5 +1,5 @@
 {
-  "name": "full-todo-app",
+  "name": "Todo",
   "integrations": {
     "capacitor": {}
   },
