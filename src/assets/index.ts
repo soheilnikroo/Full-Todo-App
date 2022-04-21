@@ -1,0 +1,10 @@
+export { default as backgroundLeftImage } from './svg/background-image-left.svg';
+export { default as backgroundRightImage } from './svg/background-image-right.svg';
+export { default as emptyImage } from './svg/empty.svg';
+export { default as loginImgae } from './svg/Login.svg';
+export { default as logo } from './svg/logo.svg';
+export { default as profileBackground } from './svg/profile-background.svg';
+export { default as signinImage } from './svg/siginin-image.svg';
+export { default as welcomImage } from './svg/welcom-image.svg';
+export { default as forwardIcon } from './svg/forward-icon.svg';
+export { default as emptyTask } from './video/emptyTask.json';
