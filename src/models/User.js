@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    userName: {
+        type: String,
+        defalut: ''
+    },
 
     password: {
         type: String,
@@ -77,7 +81,29 @@ userSchema.methods.generateAuthToken = async function(){
     }
 }
 
+//extracting public data from user to send profile data
+userSchema.methods.toJSON = function(){
+    const user = this;
+    const userObject = user.toObject();
+
+    delete userObject.password;
+    delete userObject.tokens;
+    delete userObject._id;
+    delete userObject.__v;
+    delete userObject.createdAt;
+    delete userObject.updatedAt;
+
+    return userObject;
+}
+
 //mongoose hooks
+
+//initializing username baseon email
+userSchema.pre('save', function(next){
+    const user = this;
+    user.userName = user.email.split('@')[0];
+    next();
+})
 
 //hashing password before saving it to database
 userSchema.pre('save', async function(next) {

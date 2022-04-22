@@ -50,10 +50,17 @@ const logOutUser = async (req, res) => {
     }
 }
 
+//serving user's profie data
+const getUserProfile = (req, res) => {
+    res.status(200).json({
+        userProfile: req.user
+    });
+}
 
 //exporting section 
 module.exports = {
     createUser,
     loginUser,
-    logOutUser
+    logOutUser,
+    getUserProfile
 }
