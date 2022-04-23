@@ -1,0 +1,14 @@
+.header-logo {
+  width: 76px;
+  height: 30px;
+  margin-right: 2rem;
+  position: fixed;
+  top: 1.5rem;
+}
+
+@media screen and (max-height: 700px) {
+  .header-logo {
+    width: 70px;
+    height: 24px;
+  }
+}
