@@ -1,0 +1,57 @@
+.forward-button {
+  margin-bottom: 3rem;
+  margin-right: 1rem;
+  width: 70px;
+  height: 70px;
+  color: #382aee;
+  border-radius: 70px;
+  box-shadow: 0px 4px 20px 7px rgba(123, 97, 255, 0.5);
+  animation: buttonFade 1s 2s forwards ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.forward-button__icon {
+  font-size: 2rem;
+  animation: forward 2s 3.5s infinite ease-in-out;
+}
+
+@media screen and (max-height: 768px) {
+  .forward-button {
+    margin-bottom: 1.5rem;
+    margin-right: 0.5rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+  }
+  .forward-button__icon {
+    font-size: 1.2rem;
+  }
+}
+
+@keyframes forward {
+  0%,
+  5% {
+    transform: translateX(-50px);
+  }
+
+  50% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(50px);
+  }
+}
+
+@keyframes buttonFade {
+  0% {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
