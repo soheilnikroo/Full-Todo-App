@@ -8,3 +8,4 @@ export { default as signinImage } from './svg/siginin-image.svg';
 export { default as welcomImage } from './svg/welcom-image.svg';
 export { default as forwardIcon } from './svg/forward-icon.svg';
 export { default as emptyTask } from './video/emptyTask.json';
+export { default as wave } from './svg/wave.svg';
