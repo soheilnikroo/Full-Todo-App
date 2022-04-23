@@ -1,10 +1,40 @@
 import { Fragment } from 'react';
 import { Route } from 'react-router-dom';
-import { Home } from '../pages';
+import { Home, WelcomePage } from '../pages';
 
 const routse = [
   {
     path: '/',
+    component: Home,
+    exact: true,
+    private: true,
+  },
+  {
+    path: '/',
+    component: WelcomePage,
+    exact: true,
+    private: false,
+  },
+  {
+    path: '/welcome',
+    component: WelcomePage,
+    exact: true,
+    private: false,
+  },
+  {
+    path: '/profile',
+    component: Home,
+    exact: true,
+    private: true,
+  },
+  {
+    path: '/auth/login',
+    component: Home,
+    exact: true,
+    private: false,
+  },
+  {
+    path: '/404',
     component: Home,
     exact: true,
     private: false,
