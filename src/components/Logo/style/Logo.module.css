@@ -2,8 +2,7 @@
   width: 76px;
   height: 30px;
   margin-right: 2rem;
-  position: fixed;
-  top: 1.5rem;
+  margin-top: 1rem;
 }
 
 @media screen and (max-height: 700px) {
