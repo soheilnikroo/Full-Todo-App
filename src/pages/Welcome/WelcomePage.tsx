@@ -34,7 +34,7 @@ const WelcomPage: React.FC = () => {
           src={backgroundRightImage}
           className={classes['background-img__right']}
         />
-        <div className={classes['ocean']}>
+        <div slot="fixed" className={classes['ocean']}>
           <div className={classes['wave']}></div>
           <div className={classes['wave']}></div>
         </div>
