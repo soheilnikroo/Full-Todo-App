@@ -9,11 +9,7 @@ import classes from './style/WelcomePage.module.css';
 
 // import assests
 
-import {
-  backgroundRightImage,
-  backgroundLeftImage,
-  welcomImage,
-} from '../../assets';
+import { backgroundRightImage, welcomImage } from '../../assets';
 import { ForwardButton, Logo } from '../../components';
 
 const WelcomPage: React.FC = () => {
