@@ -1,0 +1,21 @@
+#rotate {
+  display: none;
+}
+
+@media screen and (orientation: landscape) {
+  #root {
+    display: none;
+  }
+  #rotate {
+    display: block;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  #root {
+    display: block;
+  }
+  #rotate {
+    display: none;
+  }
+}
