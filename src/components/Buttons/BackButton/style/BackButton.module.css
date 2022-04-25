@@ -1,0 +1,23 @@
+.back {
+  border: 1px solid #c4c0fa;
+  border-radius: 50px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.back-icon {
+  color: #382aee;
+}
+
+@media screen and (max-height: 700px) {
+  .back {
+    border-radius: 30px;
+    width: 30px;
+    height: 30px;
+  }
+}
