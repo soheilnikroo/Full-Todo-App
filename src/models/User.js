@@ -101,9 +101,7 @@ userSchema.methods.toJSON = function(){
 //initializing username base on email
 userSchema.pre('save', function(next){
     const user = this;
-    if(user.isModified('userName')){
-        user.userName = user.email.split('@')[0];
-    };
+    user.userName = user.email.split('@')[0];
     next();
 })
 
