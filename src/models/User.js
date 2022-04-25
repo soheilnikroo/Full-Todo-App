@@ -89,13 +89,6 @@ userSchema.methods.toJSON = function(){
 
 //mongoose hooks
 
-//initializing username base on email
-userSchema.pre('save', function(next){
-    const user = this;
-    user.userName = user.email.split('@')[0];
-    next();
-})
-
 //hashing password before saving it to database
 userSchema.pre('save', async function(next) {
     const user = this; 
