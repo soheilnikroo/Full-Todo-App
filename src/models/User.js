@@ -8,30 +8,21 @@ const jwt = require('jsonwebtoken');
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: true,
-        unique: true,
+        required: [true, 'email is required'],
+        unique: [true, 'this email is alreday exists'],
         trim: true,
-        validate(value){
-            if(!validator.isEmail(value)){
-                throw new Error('email is unvalid');
-            }
-        }
+        validate: [validator.isEmail, 'invalid email']
     },
     userName: {
         type: String,
-        defalut: ''
+        required: [true, 'name is required'],
     },
 
     password: {
         type: String,
-        required: true,
-        minlength:7,
+        required: [true, 'password is required'],
+        minlength:[6, 'password must be at least 6 characters'],
         trim: true,
-        validate(value){
-            if(value.toLowerCase().includes('password')){
-                throw new Error('password cannot contain "password"');
-            }
-        }
     },
 
     tokens: [{
@@ -51,13 +42,13 @@ userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email });
 
     if(!user){
-        throw new Error('unable to login');
+        throw new Error('user not found');
     };
 
     const passwordIsMatch = await bcrypt.compare(password, user.password);
 
     if(!passwordIsMatch){
-        throw new Error('unable to login');
+        throw new Error('email or password is incorrect');
     };
 
     return user;
