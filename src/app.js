@@ -1,6 +1,6 @@
 //third-party packages and libs 
 const express = require('express');
-const cors = require('corse');
+const cors = require('cors');
 
 //app and database configurations
 const app = express();
