@@ -34,7 +34,7 @@ const WelcomPage: React.FC = () => {
           <div className={classes['wave']}></div>
           <div className={classes['wave']}></div>
         </div>
-        <div className={classes['content']}>
+        <div slot="fixed" className={classes['content']}>
           <div className={classes['content-header']}>
             <IonImg src={welcomImage} className={classes['welcom-img']} />
             <IonText className={classes['content-header__title']}>
