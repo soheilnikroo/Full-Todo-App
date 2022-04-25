@@ -1,12 +1,16 @@
 //importing models
 const User = require('../models/User');
 
+//importing error handlers
+const friendlyErrorMaker = require('../errors/errorHandler');
+
 //logic section
 
 //creating new user
 const createUser = async (req, res) => {
     const user = new User(req.body);
     try{
+
         await user.save();
         const token = await user.generateAuthToken();
         res.status(201).json({
@@ -14,8 +18,10 @@ const createUser = async (req, res) => {
             token
         });
     }catch(error){
-        console.log(error);
-        res.status(400).json();
+        const userFriendError = friendlyErrorMaker.creatingUserErrorHandler(error);
+        res.status(400).json({
+            userFriendError
+        });
     }
 }
 
