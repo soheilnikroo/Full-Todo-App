@@ -1,0 +1,9 @@
+.button {
+  font-size: 1rem;
+  width: 100%;
+}
+@media screen and (max-height: 700px) {
+  .button {
+    font-size: 0.7rem;
+  }
+}
