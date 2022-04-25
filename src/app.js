@@ -1,8 +1,6 @@
 //third-party packages and libs 
 const express = require('express');
 
-
-
 //app and database configurations
 const app = express();
 

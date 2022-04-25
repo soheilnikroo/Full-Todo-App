@@ -11,7 +11,6 @@ const hostName = process.env.HOST_NAME;
 const DBUri = process.env.DB_URI;
 
 
-
 //setting server and database alive
 mongoose.connect(DBUri, {
     useNewUrlParser: true

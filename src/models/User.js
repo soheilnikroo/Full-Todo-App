@@ -98,10 +98,12 @@ userSchema.methods.toJSON = function(){
 
 //mongoose hooks
 
-//initializing username baseon email
+//initializing username base on email
 userSchema.pre('save', function(next){
     const user = this;
-    user.userName = user.email.split('@')[0];
+    if(user.isModified('userName')){
+        user.userName = user.email.split('@')[0];
+    };
     next();
 })
 

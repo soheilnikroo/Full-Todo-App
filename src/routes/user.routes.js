@@ -19,5 +19,8 @@ router.post('/users/me/logout', authentication, userControllers.logOutUser);
 //serving user's profie data
 router.get('/users/me/profile', authentication, userControllers.getUserProfile);
 
+//patching user's profile data
+router.patch('/users/me/update', authentication, userControllers.patchUser);
+
 //exporting section
 module.exports = router;  
