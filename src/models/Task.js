@@ -16,13 +16,14 @@ const taskSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
+        ref: 'User'
     }
 }, {
     timestamps: true
 });
 
 //modelizing task Schema
-const Task = mongoose.model('task', taskSchema);
+const Task = mongoose.model('Task', taskSchema);
 
 //exporting section
 module.exports = Task;

@@ -35,6 +35,16 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 })
 
+//virtual fields
+
+//one to one relation Users/tasks <==> Task/owner
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
+
 //custom methods on User model
 
 //finding user by credentials
