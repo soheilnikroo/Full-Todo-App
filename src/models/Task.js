@@ -11,6 +11,11 @@ const taskSchema = new mongoose.Schema({
     isDone: {
         type: Boolean,
         default: false
+    },
+
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
     }
 }, {
     timestamps: true
