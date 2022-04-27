@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { Route } from 'react-router-dom';
-import { Home, LoginPage, WelcomePage } from '../pages';
+import { Home, LoginPage, SigninPage, WelcomePage } from '../pages';
 
 const routse = [
   {
@@ -35,7 +35,7 @@ const routse = [
   },
   {
     path: '/auth/signin',
-    component: LoginPage,
+    component: SigninPage,
     exact: true,
     private: false,
   },
