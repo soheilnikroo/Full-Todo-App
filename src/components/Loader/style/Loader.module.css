@@ -1,0 +1,6 @@
+.loading-container {
+  color: white;
+  --spinner-color: #fff;
+  --background: #1d2a4e;
+  --backdrop-opacity: 0.7;
+}
