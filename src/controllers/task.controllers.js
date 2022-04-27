@@ -11,6 +11,7 @@ const createNewTask = async (req, res) => {
         await task.save();
         res.status(201).json({
             success: 'task created successfully',
+            task
         })
     }catch(error){
         res.status(400).json({
@@ -20,9 +21,30 @@ const createNewTask = async (req, res) => {
     }
 }
 
+//deleting existing task
+const deleteTask = async (req, res) => {
+    const taskId = req.params._id;
+    try{
+        const task = await Task.findOneAndRemove({_id: taskId, owner: req.user._id});
 
+        if(!task){
+            return res.status(404).json({
+                error: 'task not found'
+            })
+        }
+
+        res.status(200).json({
+            success: 'task deleted successfully'
+        })
+    }catch(error){
+        res.status(500).json({
+            error: 'unable to delete task right now, try again later!'
+        })
+    }
+}
 
 //exporting section
 module.exports = {
-    createNewTask
+    createNewTask,
+    deleteTask
 }

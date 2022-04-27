@@ -12,6 +12,8 @@ const taskControllers = require('../controllers/task.controllers');
 //creating new task 
 router.post('/tasks', authentication, taskControllers.createNewTask);
 
+//deleting existing task
+router.delete('/tasks/:_id', authentication, taskControllers.deleteTask);
 
 //exporting section
 module.exports = router;
