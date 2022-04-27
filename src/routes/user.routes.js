@@ -4,6 +4,9 @@ const router = require('express').Router();
 //importing authentication middleware
 const authentication = require('../middlewares/authentication');
 
+//importing error login handler
+const loginErrorHandler = require('../errors/loginErrorHandler');
+
 //importing user controller 
 const userControllers = require('../controllers/user.controllers');
 
@@ -11,7 +14,7 @@ const userControllers = require('../controllers/user.controllers');
 router.post('/users/signup', userControllers.createUser);
 
 //login user for getting assigned by new token
-router.post('/users/login', userControllers.loginUser); 
+router.post('/users/login', userControllers.loginUser, loginErrorHandler); 
 
 //logout user
 router.post('/users/me/logout', authentication, userControllers.logOutUser);

@@ -26,7 +26,7 @@ const createUser = async (req, res) => {
 }
 
 //login user for getting assigned by new token
-const loginUser = async (req, res) => {
+const loginUser = async (req, res, next) => {
     try{
         const user = await User.findByCredentials(req.body.email, req.body.password);
         const token = await user.generateAuthToken();
@@ -34,10 +34,13 @@ const loginUser = async (req, res) => {
             user,
             token
         });
-    }catch(error){
-        res.status(401).json({
-            error: error.message
-        })
+    }catch(err){
+        const error = {
+            message: err.message,
+            status: 401
+        }
+        console.log(error);
+        next(error);
     }
 }
 
