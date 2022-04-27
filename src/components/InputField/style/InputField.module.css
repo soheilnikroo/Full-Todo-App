@@ -68,6 +68,9 @@
 }
 
 @media screen and (max-height: 800px) {
+  .input-field {
+    height: 40px;
+  }
   .input-text {
     font-size: 0.8rem;
   }
@@ -75,12 +78,41 @@
 
 @media screen and (max-height: 700px) {
   .input-field {
-    height: 40px;
-  }
-  .input-text {
-    font-size: 0.8rem;
+    height: 36px;
   }
   .input-field__input {
     font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-height: 400px) {
+  .input-text {
+    font-size: 0.7rem;
+  }
+  .input-field {
+    height: 29px;
+    font-size: 0.8rem;
+  }
+  .input-field__input {
+    border-radius: 5px;
+    font-size: 0.8rem;
+  }
+  .input-field {
+    font-size: 0.8rem;
+  }
+  .input-field__icon {
+    font-size: 0.9rem;
+  }
+
+  .input-field__icon-error {
+    font-size: 0.8rem;
+  }
+
+  .error-text {
+    font-size: 0.6rem;
+    padding-left: 0.3rem;
+  }
+  .input-field__input-error {
+    border-radius: 5px;
   }
 }
