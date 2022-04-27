@@ -1,16 +1,13 @@
 //importing models
 const User = require('../models/User');
 
-//importing error handlers
-const friendlyErrorMaker = require('../errors/errorHandler');
 
 //logic section
 
 //creating new user
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
     const user = new User(req.body);
     try{
-
         await user.save();
         const token = await user.generateAuthToken();
         res.status(201).json({
@@ -18,10 +15,8 @@ const createUser = async (req, res) => {
             token
         });
     }catch(error){
-        const userFriendError = friendlyErrorMaker.creatingUserErrorHandler(error);
-        res.status(400).json({
-            userFriendError
-        });
+        //proper error object will be made in userErrorHandler
+        next(error);
     }
 }
 
@@ -39,7 +34,6 @@ const loginUser = async (req, res, next) => {
             message: err.message,
             status: 401
         }
-        console.log(error);
         next(error);
     }
 }
@@ -87,7 +81,6 @@ const patchUser = async (req, res) => {
     res.status(200).json({
         message: 'user has been updated successfully'
     });
-
 }
 
 //exporting section 
