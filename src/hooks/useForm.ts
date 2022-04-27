@@ -7,6 +7,7 @@ interface useFormProps {
   haveDigitValue?: { value: number; error: string };
   startWithCapitalCharValue?: { value: boolean; error: string };
   emailValue?: { value: boolean; error: string };
+  confirmCheck?: { value: string; error: string };
   timeCheck?: number;
 }
 
@@ -68,6 +69,17 @@ const email = (input: string, error: string): string | boolean => {
   return error;
 };
 
+const confirmPassword = (
+  firstInput: string,
+  secondInput: string,
+  error: string
+): string | boolean => {
+  if (firstInput.trim() !== secondInput.trim()) {
+    return error;
+  }
+  return true;
+};
+
 const useForm: (
   props: useFormProps
 ) => [
@@ -82,6 +94,7 @@ const useForm: (
   haveDigitValue,
   startWithCapitalCharValue,
   emailValue,
+  confirmCheck,
   timeCheck,
 }) => {
   const [inputEntered, setInputEntered] = useState(intialValue);
@@ -131,6 +144,16 @@ const useForm: (
         }
         if (emailValue?.value) {
           const result = email(inputEntered, emailValue.error);
+          if (result !== true && typeof result === 'string') {
+            setInputError(result);
+          }
+        }
+        if (confirmCheck?.value) {
+          const result = confirmPassword(
+            inputEntered,
+            confirmCheck.value,
+            confirmCheck.error
+          );
           if (result !== true && typeof result === 'string') {
             setInputError(result);
           }
