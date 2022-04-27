@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom';
 import {
   BackButton,
   EmailInput,
+  Loader,
   Logo,
   PasswordInput,
   PrimaryButton,
@@ -23,21 +24,20 @@ import { loginImgae } from '../../../assets';
 import classes from './style/LoginPage.module.css';
 
 import { useForm } from '../../../hooks';
-import {
-  emailValidationOptions,
-  passwordValidationOptions,
-  timeCheck,
-} from './util/validation';
 import { loginRequest } from '../../../api';
 import { useCookies } from 'react-cookie';
 
+import { validations } from '../../../util';
+
 const LoginPage: React.FC = () => {
   const [emailInput, setEmailInput, emailError, setEmailError] = useForm(
-    emailValidationOptions
+    validations.emailValidationOptions
   );
 
   const [passwordInput, setPasswordInput, passwordError, setPasswordError] =
-    useForm(passwordValidationOptions);
+    useForm(validations.passwordValidationOptions);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -81,7 +81,7 @@ const LoginPage: React.FC = () => {
     setIsFormValid(false);
     let validationTimer = setTimeout(() => {
       checkFormValidation();
-    }, timeCheck);
+    }, validations.timeCheck);
 
     return () => {
       clearTimeout(validationTimer);
@@ -94,28 +94,33 @@ const LoginPage: React.FC = () => {
     checkFormValidation,
   ]);
 
-  const HandleServerError = () => {
-    setEmailError('Email or password is incorrect');
-    setPasswordError('Email or password is incorrect');
+  const HandleServerError = (errorMessage: any) => {
+    setEmailError(errorMessage);
+    setPasswordError(errorMessage);
   };
 
   const loginHandler = async () => {
+    setIsLoading(true);
     try {
       const response = await loginRequest.post('/', {
         email: emailInput,
         password: passwordInput,
       });
-
       if (response.status === 200) {
         setCookie('access_token', response.data.token);
         goToHomePage();
-        console.log(cookies.access_token);
       } else {
-        HandleServerError();
+        HandleServerError(response.data.error.message);
       }
-    } catch (error) {
-      HandleServerError();
+    } catch (error: any) {
+      if (error.response) {
+        HandleServerError(error.response.data.error.message);
+      } else {
+        HandleServerError('something went wrong!');
+        setIsLoading(false);
+      }
     }
+    setIsLoading(false);
   };
 
   const formSubmitionHandler = (
@@ -131,54 +136,66 @@ const LoginPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader slot="fixed" className={`ion-no-border ${classes.header}`}>
-        <Logo />
-        <BackButton onClick={goToWelcomePage} />
-      </IonHeader>
+      {!isLoading && (
+        <IonHeader slot="fixed" className={`ion-no-border ${classes.header}`}>
+          <Logo />
+          <BackButton onClick={goToWelcomePage} />
+        </IonHeader>
+      )}
       <IonContent fullscreen>
-        <div slot="fixed" className={classes['login']}>
-          <IonImg className={classes['login-img']} src={loginImgae} />
-          <form
-            onSubmit={formSubmitionHandler}
-            className={classes['login-form']}
-          >
-            <div className={classes['login-inputs']}>
-              <EmailInput
-                errorMessage={emailError}
-                onChange={(event) => {
-                  inputChangeHandler(event, 'email');
-                }}
-              />
-              <PasswordInput
-                iconSrc
-                errorMessage={passwordError}
-                onChange={(event) => {
-                  inputChangeHandler(event, 'password');
-                }}
-              />
-            </div>
-            <div className={classes['button-wrapper']}>
-              <PrimaryButton
-                disabled={!isFormValid}
-                type="submit"
-                text="Log In"
-              />
-            </div>
-            <IonFooter className={`ion-no-border ${classes['footer']}`}>
-              <IonText className={classes['footer-text']}>
-                Forget your password?
-                <span
-                  role="button"
-                  tabIndex={0}
-                  onClick={gotoSigninPage}
-                  className={classes['create-account']}
-                >
-                  Create Account
-                </span>
-              </IonText>
-            </IonFooter>
-          </form>
-        </div>
+        {isLoading ? (
+          <Loader
+            spinner="crescent"
+            keyboardClose
+            animated
+            isOpen={isLoading}
+            message="Please wait... "
+          />
+        ) : (
+          <div slot="fixed" className={classes['login']}>
+            <IonImg className={classes['login-img']} src={loginImgae} />
+            <form
+              onSubmit={formSubmitionHandler}
+              className={classes['login-form']}
+            >
+              <div className={classes['login-inputs']}>
+                <EmailInput
+                  errorMessage={emailError}
+                  onChange={(event) => {
+                    inputChangeHandler(event, 'email');
+                  }}
+                />
+                <PasswordInput
+                  iconSrc
+                  errorMessage={passwordError}
+                  onChange={(event: any) => {
+                    inputChangeHandler(event, 'password');
+                  }}
+                />
+              </div>
+              <IonFooter className={`ion-no-border ${classes['footer']}`}>
+                <div className={classes['button-wrapper']}>
+                  <PrimaryButton
+                    disabled={!isFormValid}
+                    type="submit"
+                    text="Log In"
+                  />
+                </div>
+                <IonText className={classes['footer-text']}>
+                  Forget your password?
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    onClick={gotoSigninPage}
+                    className={classes['create-account']}
+                  >
+                    Create Account
+                  </span>
+                </IonText>
+              </IonFooter>
+            </form>
+          </div>
+        )}
       </IonContent>
     </IonPage>
   );
