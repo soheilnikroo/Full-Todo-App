@@ -6,4 +6,6 @@ export { default as InputField } from './InputField/InputField';
 export { default as EmailInput } from './InputField/EmailField/EmailField';
 export { default as PasswordInput } from './InputField/PasswordField/PasswordField';
 
+export { default as Loader } from './Loader/Loader';
+
 export { default as Logo } from './Logo/Logo';
