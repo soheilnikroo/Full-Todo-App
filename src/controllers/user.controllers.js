@@ -38,7 +38,7 @@ const loginUser = async (req, res, next) => {
     }
 }
 
-const logOutUser = async (req, res) => {
+const logOutUser = async (req, res, next) => {
     try{     
         req.user.tokens.filter(token => token !== req.token);
         delete req.token;
@@ -46,41 +46,57 @@ const logOutUser = async (req, res) => {
         res.status(200).json({
             message: 'user has been logged out successfully'
         })
-    }catch(error){
-        res.status(500).json({
-            error: 'unable to logout now!'
-        })
+    }catch(err){
+        const error = {
+            message: 'unable to logout',
+            status: 500,
+        }
+        next(error);
     }
 }
 
 //serving user's profie data
-const getUserProfile = (req, res) => {
-    res.status(200).json({
-        userProfile: req.user
-    });
+const getUserProfile = (req, res, next) => {
+    try{ 
+        res.status(200).json({
+            userProfile: req.user
+        });
+    }catch(err){
+        const error = {
+            message: 'unable to get user profile',
+            status: 500
+        }
+        next(error);
+    }
 };
 
 //patching user's profile data
-const patchUser = async (req, res) => {
+const patchUser = async (req, res, next) => {
     const allowedToUpdate = ['email', 'password', 'userName'];
     const updatingCase = Object.keys(req.body);
     const validUpdate = updatingCase.every(field => allowedToUpdate.includes(field));
-
-    if(!validUpdate){
-        return res.status(400).json({
-            error: 'invalid update'
+    try{
+        if(!validUpdate){
+            throw new Error('Invalid update field');
+        }
+    
+        updatingCase.forEach(field => {
+            req.user[field] = req.body[field];
+        })
+    
+        await req.user.save();
+    
+        res.status(200).json({
+            message: 'user has been updated successfully'
         });
+
+    }catch(err){
+        const error = {
+            message: err.message,
+            status: 400
+        }
+        next(error);
     }
-
-    updatingCase.forEach(field => {
-        req.user[field] = req.body[field];
-    })
-
-    await req.user.save();
-
-    res.status(200).json({
-        message: 'user has been updated successfully'
-    });
 }
 
 //exporting section 

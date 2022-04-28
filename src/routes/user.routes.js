@@ -17,13 +17,13 @@ router.post('/users/signup', userControllers.createUser, userErrorHandlers.creat
 router.post('/users/login', userControllers.loginUser, userErrorHandlers.loginErrorHandler); 
 
 //logout user
-router.post('/users/me/logout', authentication, userControllers.logOutUser);
+router.post('/users/me/logout', authentication, userControllers.logOutUser, userErrorHandlers.logOutErrorHandler);
 
 //serving user's profie data
-router.get('/users/me/profile', authentication, userControllers.getUserProfile);
+router.get('/users/me/profile', authentication, userControllers.getUserProfile, userErrorHandlers.getUserProfileErrorHandler);
 
 //patching user's profile data
-router.patch('/users/me/update', authentication, userControllers.patchUser);
+router.patch('/users/me/update', authentication, userControllers.patchUser, userErrorHandlers.patchUserProfileErrorHandler);
 
 //exporting section
 module.exports = router;  

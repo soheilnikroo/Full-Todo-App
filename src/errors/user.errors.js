@@ -33,8 +33,38 @@ const loginErrorHandler = (error, req, res, next) => {
     })
 }
 
+//logging the user out 
+const logOutErrorHandler = (error, req, res, next) => {
+    res.status(error.status).json({
+        error: {
+            message: error.message
+        }
+    })
+}
+
+//handling profile data server 
+const getUserProfileErrorHandler = (error, req, res, next) => {
+    res.status(error.status).json({
+        error: {
+            message: error.message
+        }
+    })
+}
+
+//handling patch user profile
+const patchUserProfileErrorHandler = (error, req, res, next ) => {
+    res.status(error.status).json({
+        error: {
+            message: error.message
+        }
+    })
+}
+
 //exporting section
 module.exports = {
     creatingUserErrorHandler,
-    loginErrorHandler
+    loginErrorHandler,
+    logOutErrorHandler,
+    getUserProfileErrorHandler,
+    patchUserProfileErrorHandler
 }
