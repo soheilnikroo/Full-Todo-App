@@ -12,9 +12,17 @@ const deleteTaskErrorHandler = (error, req, res, next) => {
     })
 }
 
+//handling fetch tasks for authenticated user
+const fetchTasksErrorHandler = (error, req, res, next) => {
+    res.status(error.status).json({
+        message: error.message
+    })
+}
+
 
 //exporting section
 module.exports = {
     createNewTaskErrorHandler,
-    deleteTaskErrorHandler
+    deleteTaskErrorHandler,
+    fetchTasksErrorHandler
 }

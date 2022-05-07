@@ -40,8 +40,39 @@ const deleteTask = async (req, res, next) => {
     }
 }
 
+//fetching all tasks for a authenticated user
+const fetchTasks = async (req, res, next) => {
+    try{
+        await req.user.populate({
+            path: 'tasks'
+        });
+
+        if(req.user.tasks.length === 0){
+            console.log('flag');
+            const error = {
+                message: 'no tasks found',
+                status: 404
+            }
+            return next(error);
+        }
+
+        const publicTasks = req.user.tasks.map(Task.publicInfo);
+
+        res.status(200).json({
+            tasks: publicTasks
+        })
+    }catch(err){
+        const error = {
+            message: err.message,
+            status: 500,
+        }
+        next(error);
+    }
+}
+
 //exporting section
 module.exports = {
     createNewTask,
-    deleteTask
+    deleteTask,
+    fetchTasks
 }

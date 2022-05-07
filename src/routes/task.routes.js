@@ -18,5 +18,8 @@ router.post('/tasks', authentication, taskControllers.createNewTask, taskErrorHa
 //deleting existing task
 router.delete('/tasks/:_id', authentication, taskControllers.deleteTask, taskErrorHandler.deleteTaskErrorHandler);
 
+//fetching all tasks for a authenticated user
+router.get('/tasks', authentication, taskControllers.fetchTasks, taskErrorHandler.fetchTasksErrorHandler);
+
 //exporting section
 module.exports = router;

@@ -27,6 +27,19 @@ const taskSchema = new mongoose.Schema({
     timestamps: true
 });
 
+//Task model custome methods
+
+//making Task model publicable
+taskSchema.statics.publicInfo = (task) => {
+    const taskObject = task.toObject();
+
+    delete taskObject.owner;
+    delete taskObject.__v;
+    delete taskObject.createdAt;
+    delete taskObject.updatedAt;
+
+    return taskObject;
+}
 //modelizing task Schema
 const Task = mongoose.model('Task', taskSchema);
 
