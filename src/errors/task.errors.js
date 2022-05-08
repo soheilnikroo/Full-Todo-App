@@ -7,7 +7,7 @@ const createNewTaskErrorHandler = (error, req, res, next) => {
 
 //handling delete task error
 const deleteTaskErrorHandler = (error, req, res, next) => {
-    res.status(404).json({
+    res.status(error.status).json({
         error: error.message
     })
 }
@@ -15,7 +15,7 @@ const deleteTaskErrorHandler = (error, req, res, next) => {
 //handling fetch tasks for authenticated user
 const fetchTasksErrorHandler = (error, req, res, next) => {
     res.status(error.status).json({
-        message: error.message
+        error: error.message
     })
 }
 

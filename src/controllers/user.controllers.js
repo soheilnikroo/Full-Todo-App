@@ -77,7 +77,11 @@ const patchUser = async (req, res, next) => {
     const validUpdate = updatingCase.every(field => allowedToUpdate.includes(field));
     try{
         if(!validUpdate){
-            throw new Error('Invalid update field');
+            const error = {
+                message: 'invalid update',
+                status: 400
+            }
+            return next(error);
         }
     
         updatingCase.forEach(field => {
@@ -93,7 +97,7 @@ const patchUser = async (req, res, next) => {
     }catch(err){
         const error = {
             message: err.message,
-            status: 400
+            status: 500
         }
         next(error);
     }

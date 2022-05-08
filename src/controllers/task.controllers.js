@@ -10,7 +10,6 @@ const createNewTask = async (req, res, next) => {
     try{
         await task.save();
         res.status(201).json({
-            success: 'task created successfully',
             task
         })
     }catch(err){
@@ -26,16 +25,21 @@ const deleteTask = async (req, res, next) => {
         const task = await Task.findOneAndRemove({_id: taskId, owner: req.user._id});
 
         if(!task){
-            // return res.status(404).json({
-            //     error: 'task not found'
-            // })
-            throw new Error('task not found');
+            const error = {
+                message: 'task not found',
+                status: 404
+            }
+            return next(error)
         }
 
         res.status(200).json({
             success: 'task deleted successfully'
         })
-    }catch(error){
+    }catch(err){
+        const error = {
+            message: err.message,
+            status: 500
+        }
         next(error);
     }
 }

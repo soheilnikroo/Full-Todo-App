@@ -4,9 +4,7 @@ const creatingUserErrorHandler = (error, req, res, next) => {
     if(errorCode === 11000){
         message.email = 'email must be unique';
         res.status(400).json({
-            error: {
-                message
-            }
+            error: message
         })
     }
 
@@ -16,47 +14,36 @@ const creatingUserErrorHandler = (error, req, res, next) => {
             message[errorCase] = errors[errorCase].message;
         })
         res.status(400).json({
-            error: {
-                message
-            }
+            error: message
         })
     }  
 }
 
 //logging in with wrong credentials
 const loginErrorHandler = (error, req, res, next) => {
-    res.status(error.status);
-    res.json({
-        error: {
-            message: error.message
-        }
+    res.status(error.status).json({
+        error: error.message
     })
 }
 
 //logging the user out 
 const logOutErrorHandler = (error, req, res, next) => {
     res.status(error.status).json({
-        error: {
-            message: error.message
-        }
+        error: error.message
     })
 }
 
 //handling profile data server 
 const getUserProfileErrorHandler = (error, req, res, next) => {
     res.status(error.status).json({
-        error: {
-            message: error.message
-        }
+        error: error.message
     })
 }
 
 //handling patch user profile
 const patchUserProfileErrorHandler = (error, req, res, next ) => {
     res.status(error.status).json({
-        error: {
-            message: error.message
-        }
+        error: error.message
     })
 }
 
