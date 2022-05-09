@@ -1,11 +1,13 @@
 //third-party packages and libs 
 const express = require('express');
+const cors = require('cors');
 
 
 //app and database configurations
 const app = express();
 
 //applying middlewares
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
