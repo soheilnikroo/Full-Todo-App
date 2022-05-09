@@ -1,6 +1,6 @@
 //third-party packages and libs 
 const express = require('express');
-const cors = require('cors');
+
 
 //app and database configurations
 const app = express();
@@ -8,7 +8,7 @@ const app = express();
 //applying middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cors());
+
 
 //importing section for routers  
 const userRouters = require('./routes/user.routes');
