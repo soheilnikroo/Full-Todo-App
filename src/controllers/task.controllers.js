@@ -74,9 +74,55 @@ const fetchTasks = async (req, res, next) => {
     }
 }
 
+//path task basedon task id
+const patchTask = async (req, res, next) => {
+    const allowedUpdates = ['title', 'description', 'isDone'];
+    const updates = Object.keys(req.body);
+
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+
+    if(!isValidOperation){
+        const error = {
+            message: 'invalid update',
+            status: 400
+        }
+
+        return next(error);
+    }
+
+    try{
+        const task = await Task.findOne({_id: req.params._id, owner: req.user._id});
+
+        if(!task) {
+            const error = {
+                message: 'task not found',
+                status: 404
+            }
+
+            return next(error);
+        }
+
+        updates.forEach(update => task[update] = req.body[update]);
+
+        await task.save();
+
+        res.status(200).json({
+            task
+        });
+    }catch(err){
+        const error = {
+            message: err.message,
+            status: 500
+        }
+
+        next(error);
+    }
+}
+
 //exporting section
 module.exports = {
     createNewTask,
     deleteTask,
-    fetchTasks
+    fetchTasks,
+    patchTask
 }
