@@ -21,5 +21,8 @@ router.delete('/tasks/:_id', authentication, taskControllers.deleteTask, taskErr
 //fetching all tasks for a authenticated user
 router.get('/tasks', authentication, taskControllers.fetchTasks, taskErrorHandler.fetchTasksErrorHandler);
 
+//path task basedon task id
+router.patch('/tasks/:_id', authentication, taskControllers.patchTask, taskErrorHandler.patchTaskErrorHandler);
+
 //exporting section
 module.exports = router;
