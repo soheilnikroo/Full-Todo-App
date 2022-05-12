@@ -52,7 +52,7 @@ const fetchTasks = async (req, res, next) => {
         });
 
         if(req.user.tasks.length === 0){
-            res.status(404).json([]);
+            return res.status(404).json([]);
         }
 
         const publicTasks = req.user.tasks.map(Task.publicInfo);
