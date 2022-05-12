@@ -6,8 +6,7 @@ const server = require('./app');
 
 
 //server and database configurations
-const port = process.env.PORT;
-const hostName = process.env.HOST_NAME; 
+const port = process.env.PORT; 
 const DBUri = process.env.DB_URI;
 
 
@@ -15,5 +14,5 @@ const DBUri = process.env.DB_URI;
 mongoose.connect(DBUri, {
     useNewUrlParser: true
 })
-    .then(() => {server.listen(port, hostName, () => console.log(`server is alive at http://${hostName}:${port}`))})
+    .then(() => {server.listen(port, () => console.log(`server is alive at port ${port}`))})
     .catch(error => {console.log(error)});
