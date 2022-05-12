@@ -52,12 +52,7 @@ const fetchTasks = async (req, res, next) => {
         });
 
         if(req.user.tasks.length === 0){
-            console.log('flag');
-            const error = {
-                message: 'no tasks found',
-                status: 404
-            }
-            return next(error);
+            res.status(404).json([]);
         }
 
         const publicTasks = req.user.tasks.map(Task.publicInfo);
