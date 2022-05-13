@@ -60,6 +60,12 @@ const fetchTasks = async (req, res, next) => {
         }
 
         const publicTasks = req.user.tasks.map(Task.publicInfo);
+        const taskQuantity = publicTasks.length;
+        
+        //correcting task index before each fetch
+        for(let ind = 1; ind <= taskQuantity; ind++){
+            publicTasks[ind - 1].index = ind;
+        }
 
         res.status(200).json({
             tasks: publicTasks

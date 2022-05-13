@@ -23,6 +23,11 @@ const taskSchema = new mongoose.Schema({
         default: '#0000FF'
     },
 
+    index: {
+        type: Number,
+        default: 0,
+    },
+
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -31,6 +36,24 @@ const taskSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+//mongoose hooks
+
+//setting index for task base on quantity of existing tasks
+taskSchema.pre('save', async function(next){
+    try{
+        const tasksQuantity = await Task.find({owner: this.owner, isDone: this.isDone}).count();
+        this.index = tasksQuantity + 1;
+        next();
+    }catch(err){
+        const error = {
+            message: 'something went wrong in index initiation',
+            status: 500,
+        }
+        next(error);
+    }
+});
+
 
 //Task model custome methods
 
