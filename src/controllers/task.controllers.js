@@ -48,11 +48,15 @@ const deleteTask = async (req, res, next) => {
 const fetchTasks = async (req, res, next) => {
     try{
         await req.user.populate({
-            path: 'tasks'
+            path: 'tasks',
+            options: {
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.skip),
+            }
         });
 
         if(req.user.tasks.length === 0){
-            return res.status(404).json([]);
+            return res.status(200).json([]);
         }
 
         const publicTasks = req.user.tasks.map(Task.publicInfo);
