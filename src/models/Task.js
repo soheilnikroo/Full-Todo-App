@@ -18,6 +18,11 @@ const taskSchema = new mongoose.Schema({
         default: false
     },
 
+    circleColor: {
+        type:String,
+        default: '#0000FF'
+    },
+
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
