@@ -46,9 +46,16 @@ const deleteTask = async (req, res, next) => {
 
 //fetching all tasks for a authenticated user
 const fetchTasks = async (req, res, next) => {
+    const match = {}
+
+    if(req.query.isDone){
+        match.isDone = req.query.isDone === 'true';
+    }
+
     try{
         await req.user.populate({
             path: 'tasks',
+            match,
             options: {
                 limit: parseInt(req.query.limit),
                 skip: parseInt(req.query.skip),
