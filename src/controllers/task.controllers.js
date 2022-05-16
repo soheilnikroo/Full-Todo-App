@@ -46,12 +46,22 @@ const deleteTask = async (req, res, next) => {
 
 //fetching all tasks for a authenticated user
 const fetchTasks = async (req, res, next) => {
+    const match = {}
+
+    if(req.query.isDone){
+        match.isDone = req.query.isDone === 'true';
+    }
+
     try{
         await req.user.populate({
             path: 'tasks',
+            match,
             options: {
                 limit: parseInt(req.query.limit),
                 skip: parseInt(req.query.skip),
+                sort: {
+                    index: 1
+                }
             }
         });
 
@@ -59,10 +69,11 @@ const fetchTasks = async (req, res, next) => {
             return res.status(200).json([]);
         }
 
-        const publicTasks = req.user.tasks.map(Task.publicInfo);
+
+        const publicableTasks = req.user.tasks.map(task => Task.publicInfo(task));
 
         res.status(200).json({
-            tasks: publicTasks
+            tasks: publicableTasks
         })
     }catch(err){
         const error = {
@@ -118,10 +129,73 @@ const patchTask = async (req, res, next) => {
     }
 }
 
+//sorting tasks index base on reordering them in client side
+const reorderTaskIndex = async (req, res, next) => {
+    const {destinationIndex, _id} = req.body;
+    try{
+        const task = await Task.findOne({_id, owner: req.user._id});
+        const originIndex = task.index;
+        if(destinationIndex < originIndex){
+            await Task.updateMany({
+                index: {
+                    $gte: destinationIndex, 
+                    $lt: originIndex
+                }
+            }, {
+                $inc: {
+                    index: 1
+                }
+            })
+            
+            task.index = destinationIndex;
+
+            await Task.updateOne({
+                _id, 
+                owner: req.user._id
+            },{
+                index: destinationIndex
+            })
+
+            res.status(200).json({
+                message: 'tasks are reordered successfully'
+            })
+        }else if(originIndex < destinationIndex){
+            await Task.updateMany({
+                index: {
+                    $gt: originIndex, 
+                    $lte: destinationIndex
+                }
+            }, {
+                $inc: {
+                    index: -1
+                }
+            })
+
+            task.index = destinationIndex;
+
+            await Task.updateOne({
+                _id, 
+                owner: req.user._id
+            },{
+                index: destinationIndex
+            })
+
+            res.status(200).json({
+                message: 'tasks are reordered successfully'
+            })
+        }
+    }catch(err){
+        res.status(500).json({
+            error: err.message
+        })
+    }
+}
+
 //exporting section
 module.exports = {
     createNewTask,
     deleteTask,
     fetchTasks,
-    patchTask
+    patchTask,
+    reorderTaskIndex
 }
