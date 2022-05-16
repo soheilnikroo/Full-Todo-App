@@ -24,5 +24,8 @@ router.get('/tasks', authentication, taskControllers.fetchTasks, taskErrorHandle
 //path task basedon task id
 router.patch('/tasks/:_id', authentication, taskControllers.patchTask, taskErrorHandler.patchTaskErrorHandler);
 
+//sorting tasks index base on reordering them in client side
+router.post('/tasks/sortIndex', authentication, taskControllers.reorderTaskIndex);
+
 //exporting section
 module.exports = router;
