@@ -62,6 +62,7 @@ taskSchema.statics.publicInfo = (task) => {
     const taskObject = task.toObject();
 
     delete taskObject.owner;
+    delete taskObject.index;
     delete taskObject.__v;
     delete taskObject.createdAt;
     delete taskObject.updatedAt;

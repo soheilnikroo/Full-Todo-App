@@ -59,6 +59,9 @@ const fetchTasks = async (req, res, next) => {
             options: {
                 limit: parseInt(req.query.limit),
                 skip: parseInt(req.query.skip),
+                sort: {
+                    index: 1
+                }
             }
         });
 
@@ -66,16 +69,11 @@ const fetchTasks = async (req, res, next) => {
             return res.status(200).json([]);
         }
 
-        const publicTasks = req.user.tasks.map(Task.publicInfo);
-        const taskQuantity = publicTasks.length;
-        
-        //correcting task index before each fetch
-        for(let ind = 1; ind <= taskQuantity; ind++){
-            publicTasks[ind - 1].index = ind;
-        }
+
+        const publicableTasks = req.user.tasks.map(task => Task.publicInfo(task));
 
         res.status(200).json({
-            tasks: publicTasks
+            tasks: publicableTasks
         })
     }catch(err){
         const error = {
