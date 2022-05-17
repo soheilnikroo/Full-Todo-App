@@ -9,8 +9,9 @@ const createNewTask = async (req, res, next) => {
     task.owner = req.user._id;
     try{
         await task.save();
+        const publicableTask = Task.publicInfo(task);
         res.status(201).json({
-            task
+            task: publicableTask
         })
     }catch(err){
         //proper error object will be created in error handler middleware
@@ -101,25 +102,40 @@ const patchTask = async (req, res, next) => {
     }
 
     try{
-        const task = await Task.findOne({_id: req.params._id, owner: req.user._id});
+        const oldTask = await Task.findOne({_id: req.params._id, owner: req.user._id});
 
-        if(!task) {
+        if(!oldTask){
             const error = {
                 message: 'task not found',
                 status: 404
             }
-
             return next(error);
         }
 
-        updates.forEach(update => task[update] = req.body[update]);
+        await Task.updateOne({_id: oldTask._id}, {...req.body});
 
-        await task.save();
+        const newTask = await Task.findOne({_id: req.params._id, owner: req.user._id});
+
+        if(oldTask.isDone !== newTask.isDone){
+            await Task.updateMany({
+                isDone: oldTask.isDone,
+                index: {
+                    $gt: oldTask.index
+                }
+            }, {
+                $inc: {
+                    index: -1
+                }
+            })
+        };
+
+        const publicableTask = Task.publicInfo(newTask);
 
         res.status(200).json({
-            task
-        });
+            task: publicableTask
+        })
     }catch(err){
+        console.log(err);
         const error = {
             message: err.message,
             status: 500
