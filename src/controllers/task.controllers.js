@@ -22,7 +22,7 @@ const createNewTask = async (req, res, next) => {
 const deleteTask = async (req, res, next) => {
     const taskId = req.params._id;
     try{
-        const task = await Task.findOneAndRemove({_id: taskId, owner: req.user._id});
+        const task = await Task.findOneAndDelete({_id: taskId, owner: req.user._id});
 
         if(!task){
             const error = {
