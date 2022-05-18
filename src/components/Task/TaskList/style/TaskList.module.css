@@ -1,0 +1,28 @@
+.tasks {
+  width: 100vw;
+  height: fit-content;
+}
+
+.tasks-list {
+  overflow-y: scroll;
+  width: 100%;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  padding-bottom: 1.5rem;
+}
+
+.task-item {
+  background: transparent;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.empty-image {
+  width: 90%;
+  margin-top: 3rem;
+  align-self: center;
+  justify-self: center;
+}
