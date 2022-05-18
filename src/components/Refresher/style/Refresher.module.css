@@ -1,0 +1,8 @@
+.refresher {
+  z-index: 10;
+  padding-top: 25px;
+}
+
+.refresher-content {
+  --color: #00a0ff;
+}
