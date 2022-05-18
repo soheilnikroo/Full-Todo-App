@@ -5,6 +5,19 @@
   --border-radius: 10px;
   --ripple-color: #887ff5;
 }
+
+.button-loader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader-text {
+  margin-right: 0.5rem;
+}
+
 @media screen and (max-height: 800px) {
   .button {
     font-size: 0.8rem;
