@@ -1,0 +1,32 @@
+.search {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  transition: all 0.3s ease;
+}
+
+.search-icon {
+  font-size: 1.3rem;
+}
+.search-bar {
+  width: 100%;
+  height: 100%;
+  font-size: 0.5rem;
+  --color: #887ff5;
+  --placeholder-color: #eceafe;
+  transition: all 0.3s ease;
+}
+
+@media screen and (max-height: 600px) {
+  .search-icon {
+    font-size: 1rem;
+  }
+  .search-bar input {
+    font-size: 0.8rem !important;
+  }
+  .search-bar ion-icon {
+    width: 20px !important;
+  }
+}
