@@ -21,6 +21,12 @@ const config: CapacitorConfig = {
       layoutName: 'launch_screen',
       useDialog: true,
     },
+    LocalNotifications: {
+      smallIcon: 'ic_stat_icon_config_sample',
+      iconColor: '#382AEE',
+      sound: 'beep.wav',
+      allowWhileIdle: true,
+    },
   },
 };
 
