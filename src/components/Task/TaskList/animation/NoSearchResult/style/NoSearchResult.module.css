@@ -1,0 +1,12 @@
+.serach-image {
+  width: 90%;
+  margin-top: 3rem;
+  align-self: center;
+  justify-self: center;
+}
+
+@media screen and (max-height: 600px) {
+  .serach-image {
+    width: 70%;
+  }
+}
