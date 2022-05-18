@@ -1,10 +1,11 @@
-import { Fragment } from 'react';
-import { Route } from 'react-router-dom';
+import { Fragment, useContext } from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import { AuthContext } from '../context/auth-context';
 import { Home, LoginPage, SigninPage, WelcomePage } from '../pages';
 
 const routse = [
   {
-    path: '/',
+    path: '/home',
     component: Home,
     exact: true,
     private: true,
@@ -48,14 +49,22 @@ const routse = [
 ];
 
 const Routes = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+
   return (
     <Fragment>
-      {routse.map((route) => {
+      {routse.map((route, index) => {
         if (route.private) {
-          //Todo: check if user is logged in
-          return null;
+          if (isAuthenticated) {
+            return <Route key={route.path + index} {...route} />;
+          } else {
+            return <Redirect key={route.path + index} to="/welcome" />;
+          }
         } else {
-          return <Route key={route.path} {...route} />;
+          if (isAuthenticated) {
+            return <Redirect key={route.path + index} to="/home" />;
+          }
+          return <Route key={route.path + index} {...route} />;
         }
       })}
     </Fragment>
