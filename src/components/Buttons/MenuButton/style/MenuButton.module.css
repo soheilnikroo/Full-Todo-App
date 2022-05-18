@@ -1,0 +1,5 @@
+@media screen and (max-height: 600px) {
+  .menu-icon {
+    font-size: 0.8rem;
+  }
+}
