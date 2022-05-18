@@ -54,6 +54,31 @@ taskSchema.pre('save', async function(next){
     }
 });
 
+//sorting the tasks index after deleting one
+taskSchema.post('findOneAndDelete', async function(doc, next){
+    const taskIndex = doc.index;
+    try{
+        await Task.updateMany({
+            index:{
+                $gt: taskIndex
+            }
+        }, {
+           $inc: {
+               index: -1
+           } 
+        })
+        next();
+    }catch(err){
+        const error = {
+            message: 'something went wrong in index sorting',
+            status: 500,
+        }
+        next(error);
+    } 
+})
+
+
+
 
 //Task model custome methods
 
