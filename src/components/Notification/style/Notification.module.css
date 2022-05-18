@@ -1,0 +1,67 @@
+.notif {
+  width: fit-content;
+  height: fit-content;
+  position: relative;
+}
+
+.notif-icon {
+  font-size: 1.3rem;
+  animation: shakeNotif 0.5s ease-in-out forwards;
+}
+
+.notif-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 15px;
+  height: 15px;
+  text-align: center;
+  font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+@media screen and (max-height: 600px) {
+  .notif-icon {
+    font-size: 1rem;
+  }
+  .notif-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 10px;
+    height: 10px;
+    text-align: center;
+    font-size: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+}
+
+@keyframes shakeNotif {
+  0% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-1px, 0);
+  }
+  20% {
+    transform: translate(2px, 0);
+  }
+  30% {
+    transform: translate(-1px, 0);
+  }
+  40% {
+    transform: translate(2px, 0);
+  }
+  50% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
