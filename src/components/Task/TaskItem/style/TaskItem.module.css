@@ -1,0 +1,78 @@
+.container {
+  position: relative;
+}
+
+.container.dragged {
+  opacity: 0.5;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 15px;
+  padding-left: 1rem;
+  height: 50px;
+  width: 85%;
+  position: relative;
+}
+
+.dragged .task {
+  background: #f5f5f5;
+  box-shadow: none;
+}
+
+.task-disabled {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  opacity: 0.5;
+  border-radius: 15px;
+  padding-left: 1rem;
+  height: 50px;
+  width: 85%;
+  position: relative;
+  pointer-events: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.task-text {
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #3e4c76;
+  width: 80%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.task-text-done {
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #a3d6ca;
+  text-decoration: line-through;
+  width: 80%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+}
+
+@media screen and (max-height: 600px) {
+  .task-text {
+    font-size: 0.9rem;
+  }
+
+  .task-text-done {
+    font-size: 0.9rem;
+  }
+}
