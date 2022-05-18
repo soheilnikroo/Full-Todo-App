@@ -6,7 +6,7 @@ import {
   IonPage,
   IonToast,
 } from '@ionic/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { signinRequest } from '../../../api';
 import { signinImage } from '../../../assets';
@@ -20,10 +20,12 @@ import {
 } from '../../../components';
 import { useForm } from '../../../hooks';
 import { validations } from '../../../util';
-import { informationCircle, star } from 'ionicons/icons';
+import { informationCircle } from 'ionicons/icons';
 
 // import css
 import classes from './style/SigninPage.module.css';
+import { useCookies } from 'react-cookie';
+import { AuthContext } from '../../../context/auth-context';
 
 const SigninPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -44,7 +46,10 @@ const SigninPage: React.FC = () => {
 
   const [showToast, setShowToast] = useState(false);
 
+  const { login } = useContext(AuthContext);
+
   const [isFormValid, setIsFormValid] = useState(false);
+  const [cookies, setCookie] = useCookies(['access_token']);
 
   const history = useHistory();
 
@@ -125,15 +130,13 @@ const SigninPage: React.FC = () => {
       });
 
       if (response.status === 201) {
-        console.log(response.data);
-        history.replace('/');
-      } else {
-        handleServerError(response.data.userFriendError.email, true);
+        setCookie('access_token', response.data.token);
+        login();
+        history.replace('/home');
       }
     } catch (error: any) {
-      setIsLoading(false);
-      if (error.response !== undefined) {
-        handleServerError(error.response.data.userFriendError.email, true);
+      if (error.response) {
+        handleServerError(error.response.data.error.email, true);
       } else {
         handleServerError(
           'Something went wrong. Please try again later.',

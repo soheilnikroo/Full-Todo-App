@@ -22,7 +22,7 @@
 }
 
 .input-container {
-  width: 90%;
+  width: 92%;
   display: grid;
   grid-template-rows: 94px 94px;
   row-gap: 1.5rem;
@@ -40,10 +40,12 @@
 
 .button-wrapper {
   width: 90%;
-  height: 14%;
+  height: 8%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  position: absolute;
+  bottom: 3rem;
   padding-bottom: 1rem;
 }
 
@@ -87,15 +89,18 @@
   .input-container {
     margin-top: 2rem;
     grid-template-rows: 60px 60px;
+    height: 84%;
   }
   .form {
     height: 100%;
   }
+  .button-wrapper {
+    height: 14%;
+  }
 }
 
 @media screen and (max-height: 400px) {
-  .input-container {
-    margin-top: 1rem;
-    grid-template-rows: 53px 53px;
+  .button-wrapper {
+    display: none;
   }
 }
