@@ -103,6 +103,7 @@ const patchTask = async (req, res, next) => {
 
     try{
         const oldTask = await Task.findOne({_id: req.params._id, owner: req.user._id});
+        let probableNewTaskIndex = oldTask.index;
 
         if(!oldTask){
             const error = {
@@ -112,7 +113,15 @@ const patchTask = async (req, res, next) => {
             return next(error);
         }
 
-        await Task.updateOne({_id: oldTask._id}, {...req.body});
+        if(updates.includes('isDone')){
+            probableNewTaskIndex = await Task.find({isDone: req.body.isDone}).count();
+            probableNewTaskIndex = probableNewTaskIndex + 1;
+        }
+        
+        await Task.updateOne({_id: oldTask._id}, {
+            ...req.body, 
+            index: probableNewTaskIndex
+        });
 
         const newTask = await Task.findOne({_id: req.params._id, owner: req.user._id});
 
@@ -140,7 +149,6 @@ const patchTask = async (req, res, next) => {
             message: err.message,
             status: 500
         }
-
         next(error);
     }
 }
