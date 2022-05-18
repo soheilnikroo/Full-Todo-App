@@ -7,7 +7,7 @@ import {
   IonPage,
   IonText,
 } from '@ionic/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   BackButton,
@@ -28,8 +28,11 @@ import { loginRequest } from '../../../api';
 import { useCookies } from 'react-cookie';
 
 import { validations } from '../../../util';
+import { AuthContext } from '../../../context/auth-context';
 
 const LoginPage: React.FC = () => {
+  const { login } = useContext(AuthContext);
+
   const [emailInput, setEmailInput, emailError, setEmailError] = useForm(
     validations.emailValidationOptions
   );
@@ -50,7 +53,8 @@ const LoginPage: React.FC = () => {
   };
 
   const goToHomePage = (): void => {
-    history.replace('/');
+    login();
+    history.replace('/home');
   };
 
   const checkFormValidation = useCallback(() => {
@@ -109,15 +113,10 @@ const LoginPage: React.FC = () => {
       if (response.status === 200) {
         setCookie('access_token', response.data.token);
         goToHomePage();
-      } else {
-        HandleServerError(response.data.error.message);
       }
     } catch (error: any) {
       if (error.response) {
-        HandleServerError(error.response.data.error.message);
-      } else {
-        HandleServerError('something went wrong!');
-        setIsLoading(false);
+        HandleServerError(error.response.data.error);
       }
     }
     setIsLoading(false);
@@ -137,7 +136,10 @@ const LoginPage: React.FC = () => {
   return (
     <IonPage>
       {!isLoading && (
-        <IonHeader slot="fixed" className={`ion-no-border ${classes.header}`}>
+        <IonHeader
+          slot="fixed"
+          className={`ion-no-border ${classes['header']}`}
+        >
           <Logo />
           <BackButton onClick={goToWelcomePage} />
         </IonHeader>
