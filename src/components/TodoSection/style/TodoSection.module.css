@@ -1,0 +1,15 @@
+.todo-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #887ff5;
+}
+
+.todo-container {
+  margin-bottom: 1.5rem;
+}
+
+@media screen and (max-height: 600px) {
+  .todo-title {
+    font-size: 1rem;
+  }
+}
