@@ -13,12 +13,12 @@ import {
 import { closeOutline as closeIcon } from 'ionicons/icons';
 import React, { useEffect, useState } from 'react';
 import {
-  QueryObserverResult,
-  RefetchOptions,
-  RefetchQueryFilters,
-} from 'react-query';
-import { useAddTask } from '../../hooks';
-import { Todo } from '../../models';
+  useAddTask,
+  useGetAllTasks,
+  useGetDoneTask,
+  useGetTask,
+} from '../../hooks';
+import { RandomTaskColor } from '../../util';
 import PrimaryButton from '../Buttons/PrimaryButton/PrimaryButton';
 
 // import css
@@ -27,19 +27,22 @@ import classes from './style/AddTaskModal.module.css';
 interface AddTaskModalProps {
   isOpen: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  reFetch: <TPageData>(
-    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
-  ) => Promise<QueryObserverResult<Todo[], unknown>>;
 }
+
+type TextInputType = string | undefined | null;
 
 const AddTaskModal: React.FC<AddTaskModalProps> = ({
   isOpen,
   setShowModal,
-  reFetch,
 }) => {
-  const [taskTitle, setTaskTitle] = useState('');
-  const [taskDescription, setTaskDescription] = useState('');
+  const [taskTitle, setTaskTitle] = useState<TextInputType>('');
+  const [taskDescription, setTaskDescription] = useState<TextInputType>('');
   const [isCompleted, setIsCompleted] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+
+  const { allTodosRefetch } = useGetAllTasks();
+  const { doneTodosodosRefetch } = useGetDoneTask();
+  const { todosRefetch } = useGetTask();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -48,17 +51,13 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
   const handleChangeTaskTitle = (
     event: CustomEvent<InputChangeEventDetail>
   ) => {
-    if (event.detail.value) {
-      setTaskTitle(event.detail.value);
-    }
+    setTaskTitle(event.detail.value);
   };
 
   const handleChangeTaskDescription = (
     event: CustomEvent<TextareaChangeEventDetail>
   ) => {
-    if (event.detail.value) {
-      setTaskDescription(event.detail.value);
-    }
+    setTaskDescription(event.detail.value);
   };
 
   const handleChangeIsCompleted = (
@@ -69,23 +68,47 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
 
   const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setTaskDescription('');
+    setTaskTitle('');
+    setIsCompleted(false);
     setIsLoading(true);
 
-    addTodo.mutate({
-      title: taskTitle,
-      description: taskDescription,
-      isDone: isCompleted,
-    });
+    if (
+      taskTitle &&
+      taskDescription !== null &&
+      taskDescription !== undefined
+    ) {
+      addTodo.mutate({
+        title: taskTitle,
+        description: taskDescription,
+        isDone: isCompleted,
+        circleColor: RandomTaskColor(),
+      });
+    }
   };
 
   useEffect(() => {
     if (addTodo.isSuccess && !addTodo.isLoading) {
-      reFetch().then(() => {
-        setIsLoading(false);
-        setShowModal(false);
+      allTodosRefetch().then(() => {
+        todosRefetch().then(() => {
+          doneTodosodosRefetch().then(() => {
+            setIsLoading(false);
+            setShowModal(false);
+          });
+        });
       });
     }
   }, [addTodo.isSuccess]);
+
+  useEffect(() => {
+    if (taskTitle !== undefined && taskTitle !== null) {
+      if (taskTitle.trim() !== '') {
+        setDisabled(false);
+      } else {
+        setDisabled(true);
+      }
+    }
+  }, [taskTitle]);
 
   return (
     <IonModal
@@ -126,6 +149,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
                   wrap="soft"
                   spellcheck={true}
                   rows={6}
+                  value={taskDescription}
                   className={classes['desc-area']}
                   onIonChange={handleChangeTaskDescription}
                 ></IonTextarea>
@@ -136,6 +160,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
                 </IonText>
                 <IonToggle
                   onIonChange={handleChangeIsCompleted}
+                  checked={isCompleted}
                   className={classes['switch-toggle']}
                 />
               </div>
@@ -143,7 +168,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
             <div className={classes['button-wrapper']}>
               <div className={classes['button']}>
                 <PrimaryButton
-                  disabled={isLoading}
+                  disabled={isLoading || disabled}
                   isLoading={isLoading}
                   type="submit"
                   text="Submit"
