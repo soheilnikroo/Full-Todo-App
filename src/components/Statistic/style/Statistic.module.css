@@ -1,0 +1,45 @@
+.statistic-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.statistic-title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 26px;
+  font-feature-settings: 'liga' off;
+  color: #d4d4d4;
+}
+
+.statistic-number {
+  margin-top: 0.5rem;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+  font-feature-settings: 'liga' off;
+  color: #1d2a4e;
+}
+
+@media screen and (max-width: 400px) {
+  .statistic-title {
+    font-size: 14px;
+  }
+
+  .statistic-number {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .statistic-title {
+    font-size: 13px;
+  }
+
+  .statistic-number {
+    font-size: 18px;
+  }
+}
