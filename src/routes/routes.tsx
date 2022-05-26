@@ -1,9 +1,21 @@
 import { Fragment, useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { AuthContext } from '../context/auth-context';
-import { Home, LoginPage, SigninPage, WelcomePage } from '../pages';
+import {
+  Home,
+  LoginPage,
+  ProfilePage,
+  SigninPage,
+  WelcomePage,
+} from '../pages';
 
 const routse = [
+  {
+    path: '/profile',
+    component: ProfilePage,
+    exact: true,
+    private: true,
+  },
   {
     path: '/home',
     component: Home,
@@ -21,12 +33,6 @@ const routse = [
     component: WelcomePage,
     exact: true,
     private: false,
-  },
-  {
-    path: '/profile',
-    component: Home,
-    exact: true,
-    private: true,
   },
   {
     path: '/auth/login',
@@ -61,7 +67,13 @@ const Routes = () => {
             return <Redirect key={route.path + index} to="/welcome" />;
           }
         } else {
-          if (isAuthenticated) {
+          if (
+            isAuthenticated &&
+            (route.path === '/welcome' ||
+              route.path === '/' ||
+              route.path === '/auth/login' ||
+              route.path === '/auth/signin')
+          ) {
             return <Redirect key={route.path + index} to="/home" />;
           }
           return <Route key={route.path + index} {...route} />;
