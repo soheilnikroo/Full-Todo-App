@@ -23,6 +23,10 @@ const SideMenu: React.FC = () => {
     history.replace('/welcome');
   };
 
+  const goToProfilePage = () => {
+    history.push('/profile');
+  };
+
   return (
     <IonMenu
       className={classes['menu']}
@@ -42,7 +46,7 @@ const SideMenu: React.FC = () => {
             </li>
             <section className={classes['profile']}>
               <h2 className={classes['section-title']}>PROFILE</h2>
-              <li className={classes['menu-item']}>
+              <li onClick={goToProfilePage} className={classes['menu-item']}>
                 <IonIcon className={classes['menu-icon']} src={personOutline} />
                 <h3 className={classes['item-title']}>Profile</h3>
               </li>
