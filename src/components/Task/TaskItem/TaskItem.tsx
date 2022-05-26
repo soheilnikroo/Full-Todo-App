@@ -6,21 +6,15 @@ import classes from './style/TaskItem.module.css';
 import CircleStateTask from '../CircleStateTask/CircleStateTask';
 import { Draggable } from 'react-beautiful-dnd';
 import { IsTaskDraggingContext } from '../../../context/is-task-dragging';
-
-// randome color picker
-const randomColorPicker = (obj: any): any => {
-  const keys = Object.keys(obj);
-  return obj[keys[(keys.length * Math.random()) << 0]];
-};
-
-// colors
-const COLORS = {
-  PURPLE: '#110976',
-  BULISH: '#00A0FF',
-  ORANGE: '#FF744C',
-  GREEN: '#66BAA7',
-  YELLOW: '#FEE440',
-};
+import { Todo } from '../../../models';
+import {
+  useGetAllTasks,
+  useGetDoneTask,
+  useGetTask,
+  useUpdateTask,
+} from '../../../hooks';
+import PartyAnimation from './animation/PartyAnimation/PartyAnimation';
+import DoneAnimation from './animation/DoneAnimation/DoneAnimation';
 
 interface TaskItemProps {
   id: string;
@@ -28,6 +22,8 @@ interface TaskItemProps {
   title: string;
   index: number;
   description: string;
+  circleColor: string;
+  isLoadingData: boolean;
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({
@@ -36,9 +32,41 @@ const TaskItem: React.FC<TaskItemProps> = ({
   id,
   index,
   description,
+  circleColor,
+  isLoadingData,
 }) => {
-  const [color, setColor] = useState(randomColorPicker(COLORS));
   const { dragIndex } = useContext(IsTaskDraggingContext);
+
+  const updateTask = useUpdateTask();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { allTodosRefetch } = useGetAllTasks();
+  const { doneTodosodosRefetch } = useGetDoneTask();
+  const { todosRefetch } = useGetTask();
+
+  const handleCirckeColorClicked = (event: any) => {
+    event.stopPropagation();
+
+    const newTodo = new Todo({
+      _id: id,
+      title: title,
+      isDone: !isDone,
+      description: description,
+      circleColor: circleColor,
+    });
+
+    updateTask.mutate(newTodo);
+
+    setIsLoading(true);
+    allTodosRefetch().then(() => {
+      todosRefetch().then(() => {
+        doneTodosodosRefetch().then(() => {
+          setIsLoading(false);
+        });
+      });
+    });
+  };
 
   return (
     <Draggable draggableId={id} index={index}>
@@ -51,9 +79,25 @@ const TaskItem: React.FC<TaskItemProps> = ({
             dragIndex === index ? classes['dragged'] : ''
           }`}
         >
-          <div id={id} className={classes['task']}>
+          <div
+            id={id}
+            className={classes[`task${isLoading ? '-disabled' : ''}`]}
+          >
             <div className={classes['item']}>
-              <CircleStateTask done={isDone} color={color} />
+              {isLoading ? (
+                <DoneAnimation reversed={isDone ? true : false} />
+              ) : (
+                <CircleStateTask
+                  onClick={
+                    isLoading || isLoadingData
+                      ? () => {}
+                      : handleCirckeColorClicked
+                  }
+                  done={isDone}
+                  color={circleColor}
+                />
+              )}
+              {isLoading && !isDone && <PartyAnimation />}
               <IonText className={classes[`task-text${isDone ? '-done' : ''}`]}>
                 {title}
               </IonText>
