@@ -5,6 +5,7 @@ interface BodyType {
   title: string;
   description: string;
   isDone: boolean;
+  circleColor: string;
 }
 
 const postRequestTask = async ({
@@ -20,6 +21,7 @@ const postRequestTask = async ({
       title: body.title,
       description: body.description,
       isDone: body.isDone,
+      circleColor: body.circleColor,
     },
     {
       headers: {
