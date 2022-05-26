@@ -3,10 +3,16 @@ import Todo from '../models/todos-model';
 import { TaskType } from '../types';
 import { BASE_URL } from './baseUrl';
 
-const getTasksRequest = async (access_token: string) => {
+const getTasksRequest = async (
+  access_token: string,
+  isDone: boolean | null = null
+) => {
   const response = await axios.get(`${BASE_URL}/tasks`, {
     headers: {
       Authorization: `Bearer ${access_token}`,
+    },
+    params: {
+      isDone: isDone,
     },
   });
 
