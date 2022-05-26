@@ -3,6 +3,7 @@ export { default as BackButton } from './Buttons/BackButton/BackButton';
 export { default as PrimaryButton } from './Buttons/PrimaryButton/PrimaryButton';
 export { default as MenuButton } from './Buttons/MenuButton/MenuButton';
 export { default as AddTaskButton } from './Buttons/AddTaskButton/AddTaskButton';
+export { default as LogoutButton } from './Buttons/LogoutButton/LogoutButton';
 
 export { default as InputField } from './InputField/InputField';
 export { default as EmailInput } from './InputField/EmailField/EmailField';
@@ -25,3 +26,7 @@ export { default as Header } from './Header/Header';
 export { default as Refresher } from './Refresher/Refresher';
 
 export { default as SideMenu } from './SideMenu/SideMenu';
+
+export { default as ProfileImage } from './ProfileImage/ProfileImage';
+
+export { default as Statistic } from './Statistic/Statistic';
