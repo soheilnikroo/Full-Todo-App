@@ -7,3 +7,4 @@ export { default as useGetDoneTask } from './useGetDoneTask';
 export { default as useGetAllTasks } from './useGetAllTasks';
 export { default as useUpdateTask } from './useUpdateTask';
 export { default as useReorderTasks } from './useReorderTasks';
+export { default as usePhotoGallery } from './usePhotoGallery';
