@@ -116,6 +116,8 @@ const LoginPage: React.FC = () => {
       }
     } catch (error: any) {
       if (error.response) {
+        console.log(error.response.data);
+
         HandleServerError(error.response.data.error);
       }
     }

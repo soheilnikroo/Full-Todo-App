@@ -11,26 +11,23 @@ import {
   ToggleChangeEventDetail,
 } from '@ionic/react';
 import React, { useEffect, useReducer, useState } from 'react';
-import {
-  QueryObserverResult,
-  RefetchOptions,
-  RefetchQueryFilters,
-} from 'react-query';
 import { Todo } from '../../models';
 import PrimaryButton from '../Buttons/PrimaryButton/PrimaryButton';
 
 import { closeOutline as closeIcon, trashOutline } from 'ionicons/icons';
 
 import classes from './style/TaskDetailModal.module.css';
-import { useDeleteTask, useGetTask } from '../../hooks';
-import useUpdateTask from '../../hooks/useUpdateTask';
+import {
+  useDeleteTask,
+  useGetAllTasks,
+  useGetDoneTask,
+  useGetTask,
+  useUpdateTask,
+} from '../../hooks';
 
 interface TaskDetailModalProps {
   taskId: string;
   isOpen: boolean;
-  reFetch: <TPageData>(
-    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
-  ) => Promise<QueryObserverResult<Todo[], unknown>>;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -50,6 +47,7 @@ const initialState = {
   title: '',
   description: '',
   isDone: false,
+  circleColor: '#110976',
 };
 
 const taskReducer = (
@@ -57,6 +55,7 @@ const taskReducer = (
     title: string;
     description: string;
     isDone: boolean;
+    circleColor: string;
   },
   action: Action
 ) => {
@@ -82,28 +81,31 @@ let task: Todo | undefined;
 
 const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
   taskId,
-  reFetch,
   isOpen,
   setShowModal,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const deletTask = useDeleteTask();
-  const { todosData, todosIsLoading, todosRefetch } = useGetTask();
+  const { allTodosData, allTodosIsLoading } = useGetAllTasks();
   const updateTask = useUpdateTask();
+
+  const { allTodosRefetch } = useGetAllTasks();
+  const { doneTodosodosRefetch } = useGetDoneTask();
+  const { todosRefetch } = useGetTask();
 
   const [enableEditing, setEnableEditing] = useState(true);
   const [selectedTask, dispatch] = useReducer(taskReducer, initialState);
 
   useEffect(() => {
-    if (!todosIsLoading && todosData) {
-      task = todosData.find((todo: Todo) => todo._id === taskId);
+    if (!allTodosIsLoading && allTodosData) {
+      task = allTodosData.find((todo: Todo) => todo._id === taskId);
       dispatch({
         type: ActionTypes.SET_ALL_FIELDS,
         payload: task || initialState,
       });
     }
-  }, [todosData, taskId]);
+  }, [allTodosData, taskId]);
 
   const handleChangeTaskTitle = (
     event: CustomEvent<InputChangeEventDetail>
@@ -153,6 +155,7 @@ const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
         title: selectedTask.title,
         description: selectedTask.description,
         isDone: selectedTask.isDone,
+        circleColor: selectedTask?.circleColor,
       });
 
       updateTask.mutate(newTodo);
@@ -168,15 +171,23 @@ const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
 
   useEffect(() => {
     if (updateTask.isSuccess && !updateTask.isLoading) {
-      reFetch().then(() => {
-        setIsLoading(false);
-        setShowModal(false);
+      allTodosRefetch().then(() => {
+        todosRefetch().then(() => {
+          doneTodosodosRefetch().then(() => {
+            setIsLoading(false);
+            setShowModal(false);
+          });
+        });
       });
     }
     if (deletTask.isSuccess && !deletTask.isLoading) {
-      reFetch().then(() => {
-        setIsLoading(false);
-        setShowModal(false);
+      allTodosRefetch().then(() => {
+        todosRefetch().then(() => {
+          doneTodosodosRefetch().then(() => {
+            setIsLoading(false);
+            setShowModal(false);
+          });
+        });
       });
     }
   }, [

@@ -1,2 +1,2 @@
 export * as validations from './validation';
-export * as FilterTasks from './filterTodos';
+export { default as RandomTaskColor } from './genrateRandomColor';

@@ -18,8 +18,7 @@ import {
 // import css
 import classes from './style/Home.module.css';
 import AddTaskModal from '../../components/AddTaskModal/AddTaskModal';
-import { FilterTasks } from '../../util';
-import { useGetTask, useGetUser } from '../../hooks';
+import { useGetDoneTask, useGetTask, useGetUser } from '../../hooks';
 import { Todo } from '../../models';
 import { IsTaskDraggingContext } from '../../context/is-task-dragging';
 
@@ -38,20 +37,26 @@ const HomePage: React.FC = () => {
     message: '',
   });
 
-  const { userData, userIsError, userIsLoading } = useGetUser();
-  const { todosData, todosError, todosIsError, todosIsLoading, todosRefetch } =
+  const { userData, userIsError, userIsLoading, userRefetch } = useGetUser();
+  const { todosData, todosIsError, todosIsLoading, todosRefetch } =
     useGetTask();
+  const {
+    doneTodosodosData,
+    doneTodosodosIsError,
+    doneTodosodosIsLoading,
+    doneTodosodosRefetch,
+  } = useGetDoneTask();
 
   if (!userIsLoading && !userIsError && userData) {
     username = userData.userName;
   }
 
   if (!todosIsLoading && !todosIsError && todosData) {
-    todos = FilterTasks.filterTodos(todosData, FilterTasks.Filter.NotCompleted);
-    doneTodos = FilterTasks.filterTodos(
-      todosData,
-      FilterTasks.Filter.completed
-    );
+    todos = todosData;
+  }
+
+  if (!doneTodosodosIsLoading && !doneTodosodosIsError && doneTodosodosData) {
+    doneTodos = doneTodosodosData;
   }
 
   const showAddTaskModal = () => {
@@ -65,8 +70,12 @@ const HomePage: React.FC = () => {
   };
 
   function doRefresh(event: CustomEvent<RefresherEventDetail>) {
-    todosRefetch().then(() => {
-      event.detail.complete();
+    userRefetch().then(() => {
+      todosRefetch().then(() => {
+        doneTodosodosRefetch().then(() => {
+          event.detail.complete();
+        });
+      });
     });
   }
 
@@ -79,11 +88,7 @@ const HomePage: React.FC = () => {
         position="top"
         color="danger"
       />
-      <AddTaskModal
-        reFetch={todosRefetch}
-        isOpen={showModal}
-        setShowModal={setShowModal}
-      />
+      <AddTaskModal isOpen={showModal} setShowModal={setShowModal} />
       <SideMenu />
       <IonPage id="home">
         <Header />

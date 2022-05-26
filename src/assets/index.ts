@@ -13,3 +13,5 @@ export { default as menuIcon } from './svg/menu-button.svg';
 export { default as searchIcon } from './svg/search-icon.svg';
 export { default as NotificationIcon } from './svg/notifaction-icon.svg';
 export { default as noSearchResult } from './animation/no-search-result.json';
+export { default as partyAnimation } from './animation/party.json';
+export { default as doneAnimation } from './animation/done-animation.json';

@@ -16,6 +16,7 @@
   height: 50px;
   width: 85%;
   position: relative;
+  pointer-events: all;
 }
 
 .dragged .task {

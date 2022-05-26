@@ -6,6 +6,7 @@ interface NewTodoType {
   title: string;
   description: string;
   isDone: boolean;
+  circleColor: string;
 }
 
 const useAddTask = () => {
@@ -18,6 +19,7 @@ const useAddTask = () => {
         title: newTodo.title,
         description: newTodo.description,
         isDone: newTodo.isDone,
+        circleColor: newTodo.circleColor,
       },
     })
   );

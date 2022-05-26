@@ -5,12 +5,14 @@ class Todo {
   title: string;
   description: string;
   isDone: boolean;
+  circleColor: string;
 
   constructor(public todo: TaskType) {
     this._id = todo._id;
     this.title = todo.title;
     this.description = todo.description;
     this.isDone = todo.isDone;
+    this.circleColor = todo.circleColor;
   }
 
   getId() {
@@ -27,6 +29,10 @@ class Todo {
 
   getIsDone() {
     return this.isDone;
+  }
+
+  getCircleColor() {
+    return this.circleColor;
   }
 }
 

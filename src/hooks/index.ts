@@ -3,3 +3,7 @@ export { default as useGetTask } from './useGetTask';
 export { default as useGetUser } from './useGetUser';
 export { default as useAddTask } from './useAddTask';
 export { default as useDeleteTask } from './useDeleteTask';
+export { default as useGetDoneTask } from './useGetDoneTask';
+export { default as useGetAllTasks } from './useGetAllTasks';
+export { default as useUpdateTask } from './useUpdateTask';
+export { default as useReorderTasks } from './useReorderTasks';

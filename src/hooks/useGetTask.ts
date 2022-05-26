@@ -6,7 +6,7 @@ const useGetTask = () => {
   const [cookies, setCookie] = useCookies(['access_token']);
 
   const { isLoading, error, isError, data, refetch } = useQuery('todos', () =>
-    getTasksRequest(cookies.access_token)
+    getTasksRequest(cookies.access_token, false)
   );
 
   let todosIsLoading = isLoading;

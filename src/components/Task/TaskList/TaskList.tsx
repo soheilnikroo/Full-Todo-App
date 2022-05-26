@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 // import css
 import classes from './style/TaskList.module.css';
@@ -10,7 +10,12 @@ import { IsTaskDraggingContext } from '../../../context/is-task-dragging';
 import EmptyTask from './animation/EmptyTask/EmptyTask';
 import TaskDetailModal from '../../TaskDetailModal/TaskDetailModal';
 import NoSearchResult from './animation/NoSearchResult/NoSearchResult';
-import { useGetTask } from '../../../hooks';
+import {
+  useGetAllTasks,
+  useGetDoneTask,
+  useGetTask,
+  useReorderTasks,
+} from '../../../hooks';
 
 interface TaskListProps {
   data: (Todo | undefined)[];
@@ -20,10 +25,16 @@ const TaskList: React.FC<TaskListProps> = ({ data }) => {
   const { searchTerm } = useContext(SearchContext);
   let filteredData: (Todo | undefined)[] = [];
 
+  const reorderTask = useReorderTasks();
+
+  const { allTodosData, allTodosIsError, allTodosIsLoading, allTodosRefetch } =
+    useGetAllTasks();
   const { todosRefetch } = useGetTask();
+  const { doneTodosodosRefetch } = useGetDoneTask();
 
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState('');
+  const [isLoaidng, setIsLoading] = useState(false);
 
   if (searchTerm !== 'Search') {
     filteredData = data.filter((task) => {
@@ -43,12 +54,35 @@ const TaskList: React.FC<TaskListProps> = ({ data }) => {
   };
 
   const dragEndHandler = (event: any) => {
-    if (!event.destination) {
+    setIsDragFalse();
+    handleDragIndex(-1);
+
+    if (!event.destination || event.destination.index === event.source.index) {
       return;
     }
-    handleDragIndex(-1);
-    setIsDragFalse();
+
+    setIsLoading(true);
+    if (!allTodosIsError && !allTodosIsLoading) {
+      const taskId = allTodosData[event.source.index]._id;
+
+      reorderTask.mutate({
+        id: taskId,
+        destinationIndex: event.destination.index + 1,
+      });
+    }
   };
+
+  useEffect(() => {
+    if (reorderTask.isSuccess && !reorderTask.isError) {
+      allTodosRefetch().then(() => {
+        todosRefetch().then(() => {
+          doneTodosodosRefetch().then(() => {
+            setIsLoading(false);
+          });
+        });
+      });
+    }
+  }, [reorderTask.isSuccess]);
 
   const handleTaskItemClick = (task: Todo | undefined) => {
     setSelectedTaskId(task?._id || '');
@@ -65,26 +99,31 @@ const TaskList: React.FC<TaskListProps> = ({ data }) => {
             className={classes['tasks']}
           >
             <TaskDetailModal
-              reFetch={todosRefetch}
               taskId={selectedTaskId}
               isOpen={showDetailModal}
               setShowModal={setShowDetailModal}
             />
 
-            <ul className={classes['tasks-list']}>
+            <ul
+              className={classes[`tasks-list${isLoaidng ? '-disabled' : ''}`]}
+            >
               {filteredData.length !== 0 || data.length !== 0 ? (
                 filteredData.map((task, index) => (
                   <li
-                    onClick={() => handleTaskItemClick(task)}
+                    onClick={() =>
+                      isLoaidng ? null : handleTaskItemClick(task)
+                    }
                     key={task?._id}
                     className={classes['task-item']}
                   >
                     <TaskItem
+                      isLoadingData={isLoaidng}
                       index={index}
                       id={task?._id || ''}
                       title={task?.title || ''}
                       description={task?.description || ''}
                       isDone={task?.isDone || false}
+                      circleColor={task?.circleColor || '#ffffff'}
                     />
                   </li>
                 ))

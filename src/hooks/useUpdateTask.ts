@@ -6,7 +6,7 @@ import { Todo } from '../models';
 const useUpdateTask = () => {
   const [cookies, setCookie] = useCookies(['access_token']);
 
-  const deleteTask = useMutation((task: Todo) =>
+  const updateTask = useMutation((task: Todo) =>
     patchRequestTask({
       id: task._id,
       access_token: cookies.access_token,
@@ -18,7 +18,7 @@ const useUpdateTask = () => {
     })
   );
 
-  return deleteTask;
+  return updateTask;
 };
 
 export default useUpdateTask;

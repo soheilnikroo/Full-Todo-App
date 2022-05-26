@@ -14,6 +14,20 @@
   padding-bottom: 1.5rem;
 }
 
+.tasks-list-disabled {
+  overflow-y: scroll;
+  width: 100%;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  padding-bottom: 1.5rem;
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: none;
+}
+
 .task-item {
   background: transparent;
   width: 100%;
