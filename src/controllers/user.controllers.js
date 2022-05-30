@@ -139,6 +139,21 @@ const deleteExistingAvatar = async (req, res, next) => {
         }
         next(error);
     }
+};
+
+//get avatar for user profile
+const getAvatar = async (req, res, next) => {
+    try{
+        const buffer = await sharp(req.user.imageUrl).png().toBuffer();
+        res.set('Content-Type', 'image/png');
+        res.send(buffer);
+    }catch(err){
+        const error = {
+            message: err.message,
+            status: 500
+        }
+        next(error);
+    }
 }
 
 //exporting section 
@@ -149,5 +164,6 @@ module.exports = {
     getUserProfile,
     patchUser,
     saveNewAvatar,
-    deleteExistingAvatar
+    deleteExistingAvatar,
+    getAvatar
 }
