@@ -1,3 +1,6 @@
+//third-party packages and libs
+const sharp = require('sharp');
+
 //importing models
 const User = require('../models/User');
 
@@ -103,11 +106,48 @@ const patchUser = async (req, res, next) => {
     }
 }
 
+//saving new avatar for user profile
+const saveNewAvatar = async (req, res, next) => {
+    try{
+        const buffer = await sharp(req.file.buffer).resize({width: 250, height: 250}).png().toBuffer();
+        req.user.imageUrl = buffer;
+        await req.user.save();
+        res.status(200).json({
+            message: 'avatar has been saved successfully'
+        });
+    }catch(err){
+        const error = {
+            message: err.message,
+            status: 500
+        }
+        next(error);
+    }
+}
+
+//deleting avatar from user account
+const deleteExistingAvatar = async (req, res, next) => {
+    try{
+        req.user.imageUrl = undefined;
+        await req.user.save();
+        res.status(200).json({
+            message: 'avatar has been deleted successfully'
+        });
+    }catch(err){
+        const error = {
+            message: err.message,
+            status: 400
+        }
+        next(error);
+    }
+}
+
 //exporting section 
 module.exports = {
     createUser,
     loginUser,
     logOutUser,
     getUserProfile,
-    patchUser
+    patchUser,
+    saveNewAvatar,
+    deleteExistingAvatar
 }

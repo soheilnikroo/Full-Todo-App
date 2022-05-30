@@ -1,8 +1,9 @@
 //third party-packages and libs
 const router = require('express').Router();
 
-//importing authentication middleware
+//importing  middlewares
 const authentication = require('../middlewares/authentication');
+const uploadFile = require('../middlewares/avatar');
 
 //importing error login handlers
 const userErrorHandlers = require('../errors/user.errors');
@@ -24,6 +25,12 @@ router.get('/users/me/profile', authentication, userControllers.getUserProfile, 
 
 //patching user's profile data
 router.patch('/users/me/update', authentication, userControllers.patchUser, userErrorHandlers.patchUserProfileErrorHandler);
+
+//saving new avatar for user profile
+router.post('/users/me/avatar', authentication, uploadFile.single('avatar'),  userControllers.saveNewAvatar, userErrorHandlers.saveAvatarErrorHandler);
+
+//deleting avatar from user account
+router.delete('/users/me/avatar', authentication, userControllers.deleteExistingAvatar, userErrorHandlers.deleteExistingAvatarErrorHandler);
 
 //exporting section
 module.exports = router;  
