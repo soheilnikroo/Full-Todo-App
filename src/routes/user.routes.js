@@ -32,5 +32,8 @@ router.post('/users/me/avatar', authentication, uploadFile.single('avatar'),  us
 //deleting avatar from user account
 router.delete('/users/me/avatar', authentication, userControllers.deleteExistingAvatar, userErrorHandlers.deleteExistingAvatarErrorHandler);
 
+//get avatar for user profile
+router.get('/users/me/avatar', authentication, userControllers.getAvatar, userErrorHandlers.getUserProfileErrorHandler);
+
 //exporting section
 module.exports = router;  
