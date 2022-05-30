@@ -47,11 +47,27 @@ const patchUserProfileErrorHandler = (error, req, res, next ) => {
     })
 }
 
+//saving new avatar error handler
+const saveAvatarErrorHandler = (error, req, res, next) => {
+    res.status(error.status).json({
+        error: error.message
+    })
+};
+
+//deleting avatar from user account error handler
+const deleteExistingAvatarErrorHandler = (error, req, res, next) => {
+    res.status(error.status).json({
+        error: error.message
+    })
+}
+
 //exporting section
 module.exports = {
     creatingUserErrorHandler,
     loginErrorHandler,
     logOutErrorHandler,
     getUserProfileErrorHandler,
-    patchUserProfileErrorHandler
+    patchUserProfileErrorHandler,
+    saveAvatarErrorHandler,
+    deleteExistingAvatarErrorHandler
 }
