@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
 
     imageUrl: {
         type: Buffer,
-        default: '',
+        default: undefined
     }
 },{
     timestamps: true
