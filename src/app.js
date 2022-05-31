@@ -16,7 +16,6 @@ app.use(express.urlencoded({extended:true}));
 const userRouters = require('./routes/user.routes');
 const taskRouters = require('./routes/task.routes');
 
-
 //applying routers
 app.use('/api', userRouters);
 app.use('/api', taskRouters);

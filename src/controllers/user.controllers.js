@@ -1,9 +1,9 @@
 //third-party packages and libs
 const sharp = require('sharp');
 
-//importing models
+//importing models and utils
 const User = require('../models/User');
-
+const sendEmail = require('../utils/sendEmail');
 
 //logic section
 
@@ -17,6 +17,7 @@ const createUser = async (req, res, next) => {
             user,
             token
         });
+        sendEmail(user.email, user.userName);
     }catch(error){
         //proper error object will be made in userErrorHandler
         next(error);
