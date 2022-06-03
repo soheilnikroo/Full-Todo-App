@@ -97,7 +97,7 @@ userSchema.methods.toJSON = function(){
     delete userObject.__v;
     delete userObject.createdAt;
     delete userObject.updatedAt;
-    delete userObject.imageUrl;
+    // delete userObject.imageUrl;
 
     return userObject;
 }
