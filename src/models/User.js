@@ -34,7 +34,6 @@ const userSchema = new mongoose.Schema({
 
     imageUrl: {
         type: Buffer,
-        default: undefined
     }
 },{
     timestamps: true
@@ -98,6 +97,7 @@ userSchema.methods.toJSON = function(){
     delete userObject.__v;
     delete userObject.createdAt;
     delete userObject.updatedAt;
+    delete userObject.imageUrl;
 
     return userObject;
 }
