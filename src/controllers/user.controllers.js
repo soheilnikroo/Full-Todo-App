@@ -1,5 +1,6 @@
 //third-party packages and libs
 const sharp = require('sharp');
+const fs = require('fs');
 
 //importing models and utils
 const User = require('../models/User');
@@ -145,10 +146,16 @@ const deleteExistingAvatar = async (req, res, next) => {
 //get avatar for user profile
 const getAvatar = async (req, res, next) => {
     try{
-        const buffer = await sharp(req.user.imageUrl).png().toBuffer();
+        if(!req.user.imageUrl){
+            const error = {
+                message: 'there is no avatar',
+                status: 200
+            }
+            return next(error);
+        }
         res.set('Content-Type', 'image/png');
-        res.send(buffer);
-    }catch(err){
+        res.send(req.user.imageUrl);
+    }catch(err){    
         const error = {
             message: err.message,
             status: 500
