@@ -111,7 +111,6 @@ const patchUser = async (req, res, next) => {
 //saving new avatar for user profile
 const saveNewAvatar = async (req, res, next) => {
     try{
-        console.log('avatar controller flag')
         const buffer = await sharp(req.file.buffer).resize({width: 250, height: 250}).png().toBuffer();
         req.user.imageUrl = buffer;
         await req.user.save();

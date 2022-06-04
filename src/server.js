@@ -1,16 +1,9 @@
-//third-party packages and libs 
-const mongoose = require('mongoose');
-
-//importing app 
+//importing app and database connector
 const server = require('./app');
+const dataBaseConnector = require('./utils/database');
 
 //server and database configurations
 const port = process.env.PORT; 
-const DBUri = process.env.DB_URI;
 
-//setting server and database alive
-mongoose.connect(DBUri, {
-    useNewUrlParser: true
-})
-    .then(() => {server.listen(port, () => console.log(`server is alive at port ${port}`))})
-    .catch(error => {console.log(error)});
+//stablishing database connection and server listener
+dataBaseConnector(server, port);
