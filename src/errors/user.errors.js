@@ -49,7 +49,7 @@ const patchUserProfileErrorHandler = (error, req, res, next ) => {
 
 //saving new avatar error handler
 const saveAvatarErrorHandler = (error, req, res, next) => {
-    res.status(error.status).json({
+    res.status(400).json({
         error: error.message
     })
 };

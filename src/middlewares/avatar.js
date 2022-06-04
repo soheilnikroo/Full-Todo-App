@@ -4,9 +4,9 @@ const multer = require('multer');
 //configuring uploding file
 const upload = multer({
     limits: {
-        fileSize: 1000000
+        fileSize: 2000000
     },
-    fileFilter(req, file, cb){
+    async fileFilter(req, file, cb){
         if(!file.originalname.match(/\.(jpg|png|jpeg)$/)){
             return cb(new Error('file format must be jpg, png or jpeg'));
         }
