@@ -1,84 +1,47 @@
 import { Fragment, useContext } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import { AuthContext } from '../context/auth-context';
 import {
+  ErrorPage,
   Home,
   LoginPage,
+  NotFoundPage,
   ProfilePage,
   SigninPage,
   WelcomePage,
 } from '../pages';
-
-const routse = [
-  {
-    path: '/profile',
-    component: ProfilePage,
-    exact: true,
-    private: true,
-  },
-  {
-    path: '/home',
-    component: Home,
-    exact: true,
-    private: true,
-  },
-  {
-    path: '/',
-    component: WelcomePage,
-    exact: true,
-    private: false,
-  },
-  {
-    path: '/welcome',
-    component: WelcomePage,
-    exact: true,
-    private: false,
-  },
-  {
-    path: '/auth/login',
-    component: LoginPage,
-    exact: true,
-    private: false,
-  },
-  {
-    path: '/auth/signin',
-    component: SigninPage,
-    exact: true,
-    private: false,
-  },
-  {
-    path: '/404',
-    component: Home,
-    exact: true,
-    private: false,
-  },
-];
 
 const Routes = () => {
   const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <Fragment>
-      {routse.map((route, index) => {
-        if (route.private) {
-          if (isAuthenticated) {
-            return <Route key={route.path + index} {...route} />;
-          } else {
-            return <Redirect key={route.path + index} to="/welcome" />;
-          }
-        } else {
-          if (
-            isAuthenticated &&
-            (route.path === '/welcome' ||
-              route.path === '/' ||
-              route.path === '/auth/login' ||
-              route.path === '/auth/signin')
-          ) {
-            return <Redirect key={route.path + index} to="/home" />;
-          }
-          return <Route key={route.path + index} {...route} />;
-        }
-      })}
+      <Switch>
+        {isAuthenticated ? (
+          <Route exact path="/" component={Home} />
+        ) : (
+          <Route exact path="/" component={WelcomePage} />
+        )}
+        {isAuthenticated ? (
+          <Route exact path="/profile" component={ProfilePage} />
+        ) : (
+          <Route exact path="/profile">
+            <Redirect to="/auth/login"></Redirect>
+          </Route>
+        )}
+        {isAuthenticated ? (
+          <Route exact path="/home" component={Home} />
+        ) : (
+          <Route exact path="/home">
+            <Redirect to="/auth/login"></Redirect>
+          </Route>
+        )}
+        <Route exact path="/welcome" component={WelcomePage} />
+        <Route exact path="/auth/login" component={LoginPage} />
+        <Route exact path="/auth/signin" component={SigninPage} />
+        <Route exact path="/error" component={ErrorPage} />
+        <Route path="*" component={NotFoundPage} />
+      </Switch>
     </Fragment>
   );
 };
