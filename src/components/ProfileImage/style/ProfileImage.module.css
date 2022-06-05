@@ -45,6 +45,17 @@
   justify-content: center;
 }
 
+.profile-input {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 32px;
+  z-index: 55;
+}
+
 @media screen and (max-width: 400px) {
   .profile-img {
     border-radius: 35px;
