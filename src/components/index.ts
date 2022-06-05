@@ -1,4 +1,5 @@
 export { default as ForwardButton } from './Buttons/ForwardButton/ForwardButton';
+export { default as NextButton } from './Buttons/NextButton/NextButton';
 export { default as BackButton } from './Buttons/BackButton/BackButton';
 export { default as PrimaryButton } from './Buttons/PrimaryButton/PrimaryButton';
 export { default as MenuButton } from './Buttons/MenuButton/MenuButton';
