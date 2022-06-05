@@ -8,3 +8,6 @@ export { default as useGetAllTasks } from './useGetAllTasks';
 export { default as useUpdateTask } from './useUpdateTask';
 export { default as useReorderTasks } from './useReorderTasks';
 export { default as usePhotoGallery } from './usePhotoGallery';
+export { default as useUpdateUser } from './useUpdateUser';
+export { default as useGetUserAvatr } from './useGetUserAvatr';
+export { default as useAddAvatar } from './useAddAvatar';
