@@ -1,7 +1,7 @@
 import { IonText } from '@ionic/react';
 import React from 'react';
 import Todo from '../../models/todos-model';
-import TaskSkeleton from '../Skeletons/TaskSkeleton';
+import TaskSkeleton from '../Skeletons/TaskSkeleton/TaskSkeleton';
 import TaskList from '../Task/TaskList/TaskList';
 
 // import css
