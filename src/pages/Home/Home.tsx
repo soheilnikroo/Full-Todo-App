@@ -2,7 +2,6 @@ import {
   IonContent,
   IonPage,
   IonText,
-  IonToast,
   RefresherEventDetail,
 } from '@ionic/react';
 import { Fragment, useContext, useEffect, useState } from 'react';
@@ -18,9 +17,15 @@ import {
 // import css
 import classes from './style/Home.module.css';
 import AddTaskModal from '../../components/AddTaskModal/AddTaskModal';
-import { useGetDoneTask, useGetTask, useGetUser } from '../../hooks';
+import {
+  useAddAvatar,
+  useGetDoneTask,
+  useGetTask,
+  useGetUser,
+} from '../../hooks';
 import { Todo } from '../../models';
 import { IsTaskDraggingContext } from '../../context/is-task-dragging';
+import { Redirect } from 'react-router';
 
 const HomePage: React.FC = () => {
   // username and tasks variables
@@ -32,10 +37,7 @@ const HomePage: React.FC = () => {
   const { isDrag } = useContext(IsTaskDraggingContext);
   const [showModal, setShowModal] = useState(false);
 
-  const [warningToast, setWarningToast] = useState({
-    show: false,
-    message: '',
-  });
+  const [category, setCategory] = useState('todo');
 
   const { userData, userIsError, userIsLoading, userRefetch } = useGetUser();
   const { todosData, todosIsError, todosIsLoading, todosRefetch } =
@@ -46,6 +48,10 @@ const HomePage: React.FC = () => {
     doneTodosodosIsLoading,
     doneTodosodosRefetch,
   } = useGetDoneTask();
+
+  if (userIsError || todosIsError || doneTodosodosIsError) {
+    return <Redirect to="/error" />;
+  }
 
   if (!userIsLoading && !userIsError && userData) {
     username = userData.userName;
@@ -63,8 +69,6 @@ const HomePage: React.FC = () => {
     setShowModal(true);
   };
 
-  const [category, setCategory] = useState('todo');
-
   const changeCategoryHandler = (categoryTitle: string): void => {
     setCategory(categoryTitle);
   };
@@ -81,13 +85,6 @@ const HomePage: React.FC = () => {
 
   return (
     <Fragment>
-      <IonToast
-        isOpen={warningToast.show}
-        onDidDismiss={() => setWarningToast({ show: false, message: '' })}
-        message={warningToast.message}
-        position="top"
-        color="danger"
-      />
       <AddTaskModal isOpen={showModal} setShowModal={setShowModal} />
       <SideMenu />
       <IonPage id="home">
