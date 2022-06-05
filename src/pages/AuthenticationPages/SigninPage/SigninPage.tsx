@@ -18,7 +18,7 @@ import {
   PasswordInput,
   PrimaryButton,
 } from '../../../components';
-import { useForm } from '../../../hooks';
+import { useForm, useUpdateUser } from '../../../hooks';
 import { validations } from '../../../util';
 import { informationCircle } from 'ionicons/icons';
 
@@ -117,6 +117,8 @@ const SigninPage: React.FC = () => {
 
   const handleServerError = (errorMessage: any, isEmailUse: boolean): void => {
     isEmailUse && setShowToast(true);
+    setIsFormValid(false);
+    setIsLoading(false);
     setEmialError(errorMessage);
   };
 
