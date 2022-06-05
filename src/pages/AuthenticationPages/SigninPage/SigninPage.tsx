@@ -18,7 +18,7 @@ import {
   PasswordInput,
   PrimaryButton,
 } from '../../../components';
-import { useForm, useUpdateUser } from '../../../hooks';
+import { useForm } from '../../../hooks';
 import { validations } from '../../../util';
 import { informationCircle } from 'ionicons/icons';
 
@@ -34,8 +34,9 @@ const SigninPage: React.FC = () => {
     validations.emailValidationOptions
   );
 
-  const [passwordInput, setPasswordInput, passwordError, setPasswordError] =
-    useForm(validations.passwordValidationOptions);
+  const [passwordInput, setPasswordInput, passwordError] = useForm(
+    validations.passwordValidationOptions
+  );
 
   const [
     confrimPasswordInput,
@@ -134,7 +135,7 @@ const SigninPage: React.FC = () => {
       if (response.status === 201) {
         setCookie('access_token', response.data.token);
         login();
-        history.replace('/home');
+        history.replace('/setimage');
       }
     } catch (error: any) {
       if (error.response) {
