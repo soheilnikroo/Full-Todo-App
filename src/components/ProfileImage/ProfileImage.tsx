@@ -1,25 +1,35 @@
 import { IonIcon, IonImg } from '@ionic/react';
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 
 import { createOutline as editIcon } from 'ionicons/icons';
 
 // import css
 import classes from './style/ProfileImage.module.css';
 import { profileBackground } from '../../assets';
-import { usePhotoGallery } from '../../hooks';
+import { useAddAvatar, useGetUser } from '../../hooks';
+import ProfileImageSkeletone from '../Skeletons/ProfileImageSkeletone/ProfileImageSkeletone';
 
 const ProfileImage: React.FC<any> = ({ imageSrc }) => {
-  const { photos, takePhoto } = usePhotoGallery();
+  const updateUserAvatar = useAddAvatar();
+  const { userRefetch } = useGetUser();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const changeImageHandler = (): void => {
-    takePhoto();
+  const changeImageHandler = (event: any): void => {
+    const image = event.target.files[0];
+
+    const fd = new FormData();
+    fd.append('avatar', image, image.name);
+    setIsLoading(true);
+    updateUserAvatar.mutate({
+      imageUrl: fd,
+    });
   };
 
   useEffect(() => {
-    if (photos[0]?.webviewPath) {
-      // dispatch(editImage({ imageUrl: photos[0].webviewPath }));
-    }
-  }, [photos]);
+    userRefetch().then(() => {
+      setIsLoading(false);
+    });
+  }, [updateUserAvatar.isSuccess]);
 
   return (
     <div className={classes['profile-content']}>
@@ -29,22 +39,30 @@ const ProfileImage: React.FC<any> = ({ imageSrc }) => {
       />
       <div className={classes['profile-detail-container']}>
         <div className={classes['profile-detail']}>
-          <img
-            className={classes['profile-img']}
-            src={imageSrc}
-            alt="profileImage"
-          />
-          <span
-            role="button"
-            tabIndex={0}
-            onClick={changeImageHandler}
-            className={classes['profile-img__edit']}
-          >
-            <IonIcon
-              className={classes['profile-img__edit-icon']}
-              src={editIcon}
-            />
-          </span>
+          {isLoading ? (
+            <ProfileImageSkeletone />
+          ) : (
+            <Fragment>
+              <img
+                className={classes['profile-img']}
+                src={`data:image/png;base64, ${imageSrc}`}
+                alt="profileImage"
+              />
+
+              <span className={classes['profile-img__edit']}>
+                <input
+                  className={classes['profile-input']}
+                  type="file"
+                  accept="image/*"
+                  onChange={changeImageHandler}
+                />
+                <IonIcon
+                  className={classes['profile-img__edit-icon']}
+                  src={editIcon}
+                />
+              </span>
+            </Fragment>
+          )}
         </div>
       </div>
     </div>
