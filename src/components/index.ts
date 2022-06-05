@@ -30,3 +30,7 @@ export { default as SideMenu } from './SideMenu/SideMenu';
 export { default as ProfileImage } from './ProfileImage/ProfileImage';
 
 export { default as Statistic } from './Statistic/Statistic';
+
+export { default as TaskSkeleton } from './Skeletons/TaskSkeleton/TaskSkeleton';
+export { default as ProfileImageSkeletone } from './Skeletons/ProfileImageSkeletone/ProfileImageSkeletone';
+export { default as StatisticSkeleton } from './Skeletons/StatisticSkeleton/StatisticSkeleton';
