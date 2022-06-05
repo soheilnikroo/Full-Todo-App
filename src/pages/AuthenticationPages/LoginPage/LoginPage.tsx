@@ -99,6 +99,8 @@ const LoginPage: React.FC = () => {
   ]);
 
   const HandleServerError = (errorMessage: any) => {
+    setIsFormValid(false);
+    setIsLoading(false);
     setEmailError(errorMessage);
     setPasswordError(errorMessage);
   };
@@ -116,8 +118,6 @@ const LoginPage: React.FC = () => {
       }
     } catch (error: any) {
       if (error.response) {
-        console.log(error.response.data);
-
         HandleServerError(error.response.data.error);
       }
     }
