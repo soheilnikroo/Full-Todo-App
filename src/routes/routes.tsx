@@ -7,6 +7,7 @@ import {
   LoginPage,
   NotFoundPage,
   ProfilePage,
+  SetImagePage,
   SigninPage,
   WelcomePage,
 } from '../pages';
@@ -39,6 +40,13 @@ const Routes = () => {
         <Route exact path="/welcome" component={WelcomePage} />
         <Route exact path="/auth/login" component={LoginPage} />
         <Route exact path="/auth/signin" component={SigninPage} />
+        {isAuthenticated ? (
+          <Route exact path="/setimage" component={SetImagePage} />
+        ) : (
+          <Route exact path="/setimage">
+            <Redirect to="/auth/login"></Redirect>
+          </Route>
+        )}
         <Route exact path="/error" component={ErrorPage} />
         <Route path="*" component={NotFoundPage} />
       </Switch>
