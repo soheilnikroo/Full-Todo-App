@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://sharex-full-todo-app.onrender.com/api';
+export const BASE_URL = 'https://full-todo-app.onrender.com/api';
