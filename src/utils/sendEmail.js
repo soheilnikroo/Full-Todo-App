@@ -10,7 +10,7 @@ const transporter = nodeMailer.createTransport({
 
 const setrMailOptionAndSend = async (userEmail, userName) => {
     const mailOptions = {
-        from: 'sharexfulltodoapp@gamil.com',
+        from: 'fulltodoappSX@gmail.com',
         to: userEmail,
         subject: 'Welcome dear friend',
         text: `dear ${userName}, you are now a member of sharex family, enjoy our full todo app`
