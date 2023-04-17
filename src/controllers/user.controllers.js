@@ -18,7 +18,7 @@ const createUser = async (req, res, next) => {
             user,
             token
         });
-        sendEmail(user.email, user.userName);
+        // sendEmail(user.email, user.userName);
     }catch(error){
         //proper error object will be made in userErrorHandler
         next(error);
